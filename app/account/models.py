@@ -14,16 +14,16 @@ def profile_image_file_path(instance, filename):
 
 class Profile(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    nickname = models.CharField()
-    height = models.IntegerField()
-    job = models.CharField()
-    residence = models.CharField()
+    nickname = models.CharField(max_length=20)
+    height = models.IntegerField(blank=True, null=True)
+    job = models.CharField(max_length=20, blank=True)
+    residence = models.CharField(max_length=200, blank=True)
 
 
 class Lifestyle(models.Model):
-    religion = models.CharField()
+    religion = models.CharField(max_length=20, blank=True)
     is_smoke = models.BooleanField(default=False)
-    drinking_frequency = models.CharField()
+    drinking_frequency = models.CharField(max_length=20, blank=True)
 
 
 class Image(models.Model):
@@ -38,10 +38,10 @@ class AnswerHistory(models.Model):
 
 
 class Question(models.Model):
-    category = models.CharField()
-    question = models.CharField()
+    category = models.CharField(max_length=20, blank=True)
+    question = models.CharField(max_length=200, blank=True)
 
 
 class Answer(models.Model):
-    question = models.ForeignKey("Question")
-    answer = models.CharField()
+    question = models.ForeignKey("Question", on_delete=models.CASCADE)
+    answer = models.CharField(max_length=200, blank=True)
