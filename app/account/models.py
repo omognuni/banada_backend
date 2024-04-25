@@ -32,9 +32,9 @@ class Image(models.Model):
 
 
 class AnswerHistory(models.Model):
-    question = models.ForeignKey("Question")
-    profile = models.ForeignKey("Profile")
-    answer = models.ForeignKey("Answer")
+    question = models.ForeignKey("Question", on_delete=models.CASCADE)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
+    answer = models.ForeignKey("Answer", on_delete=models.CASCADE)
 
 
 class Question(models.Model):
