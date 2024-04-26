@@ -4,4 +4,7 @@ from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        pass
+        for i in range(10):
+            get_user_model().objects.create_user(
+                username=f"test{i}", password="testpass"
+            )
