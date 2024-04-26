@@ -7,7 +7,7 @@ urlpatterns = [
         "api/v1/",
         include(
             [
-                path("account.urls"),
+                path("", include("account.urls")),
             ]
         ),
     ),

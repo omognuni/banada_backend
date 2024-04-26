@@ -28,7 +28,7 @@ class Profile(models.Model):
 
 class AnswerHistory(models.Model):
     question = models.ForeignKey(
-        "Question", related_name="answers", on_delete=models.CASCADE
+        "Question", related_name="histories", on_delete=models.CASCADE
     )
     profile = models.ForeignKey(
         "Profile", related_name="answers", on_delete=models.CASCADE
