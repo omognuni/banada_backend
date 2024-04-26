@@ -8,3 +8,4 @@ router = SimpleRouter()
 router.register("profiles", ProfileViewset, "profile")
 
 urlpatterns = [path("", include(router.urls))]
+
