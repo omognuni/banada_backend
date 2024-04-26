@@ -13,28 +13,29 @@ def profile_image_file_path(instance, filename):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    nickname = models.CharField(max_length=20)
+    user = models.ForeignKey(
+        get_user_model(), related_name="profiles", on_delete=models.CASCADE
+    )
+    nickname = models.CharField(max_length=20, blank=True)
     height = models.IntegerField(blank=True, null=True)
     job = models.CharField(max_length=20, blank=True)
     residence = models.CharField(max_length=200, blank=True)
-
-
-class Lifestyle(models.Model):
     religion = models.CharField(max_length=20, blank=True)
-    is_smoke = models.BooleanField(default=False)
+    is_smoke = models.BooleanField(blank=True, default=False)
     drinking_frequency = models.CharField(max_length=20, blank=True)
-
-
-class Image(models.Model):
-    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
-    image = models.ImageField(null=True, upload_to=profile_image_file_path)
+    image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
 
 
 class AnswerHistory(models.Model):
-    question = models.ForeignKey("Question", on_delete=models.CASCADE)
-    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
-    answer = models.ForeignKey("Answer", on_delete=models.CASCADE)
+    question = models.ForeignKey(
+        "Question", related_name="answers", on_delete=models.CASCADE
+    )
+    profile = models.ForeignKey(
+        "Profile", related_name="answers", on_delete=models.CASCADE
+    )
+    answer = models.ForeignKey(
+        "Answer", related_name="questions", on_delete=models.CASCADE
+    )
 
 
 class Question(models.Model):
@@ -43,5 +44,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    question = models.ForeignKey("Question", on_delete=models.CASCADE)
+    question = models.ForeignKey(
+        "Question", related_name="answers", on_delete=models.CASCADE
+    )
     answer = models.CharField(max_length=200, blank=True)
