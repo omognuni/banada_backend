@@ -1,5 +1,14 @@
-from account.models import Profile, ProfileImage
+from account.models import Profile, ProfileImage, Answer
 from rest_framework import serializers
+
+
+class ProfileAnswerSerializer(serializers.ModelSerializer):
+    question = serializers.CharField()
+    
+    class Meta:
+        model = Answer
+        fields = ("id", "question", "answer")
+        read_only_fields = ("id",)
 
 
 class ProfileImageSerializer(serializers.ModelSerializer):
@@ -12,6 +21,7 @@ class ProfileImageSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     images = ProfileImageSerializer(many=True, read_only=True)
+    answers = ProfileAnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
@@ -47,3 +57,11 @@ class ProfilePostSerializer(serializers.ModelSerializer):
             "drinking_frequency",
             "images",
         )
+        
+class ProfileAnswerPostSerializer(serializers.Serializer):
+    simulation_id = serializers.IntegerField()
+    answer = serializers.CharField()
+    
+    
+class ProfileAnswerPatchSerializer(serializers.Serializer):
+    answer = serializers.CharField()

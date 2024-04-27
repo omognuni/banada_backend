@@ -32,25 +32,20 @@ class ProfileImage(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
 
 
-class AnswerHistory(models.Model):
-    question = models.ForeignKey(
-        "Question", related_name="histories", on_delete=models.CASCADE
-    )
-    profile = models.ForeignKey(
-        "Profile", related_name="answers", on_delete=models.CASCADE
-    )
-    answer = models.ForeignKey(
-        "Answer", related_name="questions", on_delete=models.CASCADE
-    )
-
-
-class Question(models.Model):
+class Simulation(models.Model):
     category = models.CharField(max_length=20, blank=True)
     question = models.CharField(max_length=200, blank=True)
 
 
 class Answer(models.Model):
-    question = models.ForeignKey(
-        "Question", related_name="answers", on_delete=models.CASCADE
+    profile = models.ForeignKey("Profile", related_name="answers", on_delete=models.CASCADE)
+    simulation = models.ForeignKey(
+        "Simulation", related_name="answers", on_delete=models.CASCADE
     )
     answer = models.CharField(max_length=200, blank=True)
+
+    @property
+    def question(self):
+        if self.simulation:
+            return self. simulation.question
+        return

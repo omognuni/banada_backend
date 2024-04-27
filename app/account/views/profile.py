@@ -1,4 +1,5 @@
-from account.serializers.profile import ProfilePostSerializer, ProfileSerializer
+from account.serializers.profile import ProfilePostSerializer, ProfileSerializer, \
+    ProfileAnswerPostSerializer, ProfileAnswerSerializer, ProfileAnswerPatchSerializer
 from account.services.profile import ProfileService
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import status, viewsets
@@ -62,3 +63,26 @@ class ProfileViewset(viewsets.GenericViewSet):
         service.delete_my_profile()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["POST"], detail=False)
+    def answer(self, request):
+        input_serializer = ProfileAnswerPostSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+        
+        service = ProfileService(user=request.user)
+        answer = service.create_answer(input_serializer.validated_data)
+        
+        output_serializer = ProfileAnswerSerializer(answer)
+        return Response(status=status.HTTP_201_CREATED, data=output_serializer.data)
+        
+    
+    @action(methods=["PATCH"], detail=True)
+    def update_answer(self, request, answer_id):
+        input_serializer = ProfileAnswerPatchSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+        
+        service = ProfileService(user=request.user)
+        answer = service.update_answer(input_serializer.validated_data)
+        
+        output_serializer = ProfileAnswerSerializer(answer)
+        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
