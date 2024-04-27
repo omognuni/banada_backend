@@ -8,10 +8,12 @@ from rest_framework.response import Response
 
 @extend_schema_view(
     list=extend_schema(
-        description="요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회"
+        description="요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회",
+        tags=["Profile"]
     ),
-    retreive=extend_schema(description="다른 유저의 프로필을 조회"),
-    create=extend_schema(request=ProfilePostSerializer),
+    retrieve=extend_schema(description="다른 유저의 프로필을 조회", tags=["Profile"]),
+    create=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
+    update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
 )
 class ProfileViewset(viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
