@@ -1,5 +1,4 @@
-from account.models import Profile
-
+from account.models import Profile, ProfileImage
 from core.utils import exception
 from django.contrib.auth import get_user_model
 
@@ -27,14 +26,25 @@ class ProfileService:
         return profile
 
     def update_my_profile(self, validated_data):
+        images = validated_data.pop("images", [])
         profile = self._my_profile()
         for key, value in validated_data.items():
             setattr(profile, key, value)
         profile.save()
+
+        for i, image in enumerate(images):
+            ProfileImage.objects.create(profile=profile, image=image)
+
         return profile
 
     def create_my_profile(self, validated_data):
+        images = validated_data.pop("images", [])
+
         profile = Profile.objects.create(user=self._user, **validated_data)
+
+        for i, image in enumerate(images):
+            ProfileImage.objects.create(profile=profile, image=image)
+
         return profile
 
     def delete_my_profile(self):

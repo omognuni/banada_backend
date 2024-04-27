@@ -23,13 +23,18 @@ class Profile(models.Model):
     religion = models.CharField(max_length=20, blank=True)
     is_smoke = models.BooleanField(blank=True, default=False)
     drinking_frequency = models.CharField(max_length=20, blank=True)
+
+
+class ProfileImage(models.Model):
+    profile = models.ForeignKey(
+        "Profile", related_name="images", on_delete=models.CASCADE
+    )
     image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
 
 
 class AnswerHistory(models.Model):
     question = models.ForeignKey(
         "Question", related_name="histories", on_delete=models.CASCADE
-
     )
     profile = models.ForeignKey(
         "Profile", related_name="answers", on_delete=models.CASCADE
