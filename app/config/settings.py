@@ -127,7 +127,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     # General schema metadata. Refer to spec for valid inputs
     # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#openapi-object
-    "TITLE": "My Hospitol",
+    "TITLE": "Banada",
     "DESCRIPTION": "",
     # Optional: MAY contain "name", "url", "email"
     "SWAGGER_UI_SETTINGS": {
