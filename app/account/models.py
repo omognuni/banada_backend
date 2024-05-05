@@ -38,7 +38,9 @@ class Simulation(models.Model):
 
 
 class Answer(models.Model):
-    profile = models.ForeignKey("Profile", related_name="answers", on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        "Profile", related_name="answers", on_delete=models.CASCADE
+    )
     simulation = models.ForeignKey(
         "Simulation", related_name="answers", on_delete=models.CASCADE
     )
@@ -47,5 +49,5 @@ class Answer(models.Model):
     @property
     def question(self):
         if self.simulation:
-            return self. simulation.question
+            return self.simulation.question
         return
