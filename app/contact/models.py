@@ -28,7 +28,9 @@ class Message(models.Model):
         null=True,
     )
     content = models.TextField(blank=True)
-    status = models.CharField(choices=MessageStatus.choices(), max_length=20)
+    status = models.CharField(
+        choices=MessageStatus.choices(), max_length=20, default=MessageStatus.WAIT
+    )
 
     @property
     def contacts(self):
