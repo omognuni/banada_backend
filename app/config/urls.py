@@ -12,10 +12,6 @@ urlpatterns = [
     ),
     path(
         "api/v1/",
-        include(
-            [
-                path("", include("account.urls")),
-            ]
-        ),
+        include([path("", include("account.urls")), path("", include("contact.urls"))]),
     ),
 ]
