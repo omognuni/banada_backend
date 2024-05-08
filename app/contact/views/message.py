@@ -1,4 +1,4 @@
-from contact.serializers.message import MessageSerializer
+from contact.serializers.message import MessagePostSerializer, MessageSerializer
 from contact.services.message import MessageService
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
@@ -26,4 +26,11 @@ class MessageViewset(viewsets.GenericViewSet):
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
-        pass
+        input_serializer = MessagePostSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        service = MessageService(request.user)
+        message = service.send_message(input_serializer.validated_data)
+
+        output_serializer = self.get_serializer(message)
+        return Response(output_serializer.data, status=status.HTTP_201_CREATED)

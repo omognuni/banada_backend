@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "core",
     "account",
     "user",
+    "contact",
 ]
 
 MIDDLEWARE = [
