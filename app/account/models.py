@@ -1,6 +1,7 @@
 import os
 import uuid
 
+from account.enums import CategoryChoices
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -33,7 +34,9 @@ class ProfileImage(models.Model):
 
 
 class Simulation(models.Model):
-    category = models.CharField(max_length=20, blank=True)
+    category = models.CharField(
+        max_length=20, choices=CategoryChoices.choices(), blank=True
+    )
     question = models.CharField(max_length=200, blank=True)
 
 
