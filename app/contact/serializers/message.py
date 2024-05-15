@@ -21,7 +21,7 @@ class MessageTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MessageType
-        fields = ("name", "value")
+        fields = ("id", "name", "cost")
 
 
 class MessageSerializer(serializers.ModelSerializer):
