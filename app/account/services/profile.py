@@ -21,9 +21,11 @@ class ProfileService:
     def fetch_profile(self, profile_id):
         try:
             profile = Profile.objects.get(id=profile_id)
+            match_type = profile.has_match(self._my_profile())
+
         except Profile.DoesNotExist:
             raise exception.DoesNotExists
-        return profile
+        return profile, match_type
 
     def update_my_profile(self, validated_data):
         images = validated_data.pop("images", [])

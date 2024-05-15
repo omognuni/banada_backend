@@ -39,10 +39,11 @@ class ProfileViewset(viewsets.GenericViewSet):
         """
         다른 유저의 프로필을 조회
         """
-        service = ProfileService()
-        profile = service.fetch_profile(id)
+        service = ProfileService(user=request.user)
+        (profile, match_type) = service.fetch_profile(id)
         output_serializer = ProfileSerializer(profile)
-        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+        data = output_serializer.data["match_type"] = match_type
+        return Response(status=status.HTTP_200_OK, data=data)
 
     def partial_update(self, request):
         """
