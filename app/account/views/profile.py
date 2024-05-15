@@ -18,7 +18,7 @@ from rest_framework.response import Response
     ),
     retrieve=extend_schema(tags=["Profile"]),
     create=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
-    update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
+    partial_update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
     answer=extend_schema(request=ProfileAnswerPostSerializer, tags=["Profile"]),
     update_answer=extend_schema(request=ProfileAnswerPatchSerializer, tags=["Profile"]),
 )
@@ -44,7 +44,7 @@ class ProfileViewset(viewsets.GenericViewSet):
         output_serializer = ProfileSerializer(profile)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
-    def update(self, request):
+    def partial_update(self, request):
         """
         자신의 프로필을 업데이트
         """
