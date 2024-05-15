@@ -30,17 +30,18 @@ class Profile(models.Model):
         # self = 상대방, profile = 나
         # 상대방이 나한테 보낸 메시지 중 WAIT 상태인 첫 번째 메시지
 
-        if self.sent_message:
+        if self.sent_message(profile):
             # 상대방이 나한테 받은 메시지 중 WAIT 상태인 첫 번째 메시지
             received_message = profile.messages.filter(
                 receiver=self, status=MessageStatus.WAIT
             ).first()
-
+            sent_message = self.sent_message(profile)
             if (
                 received_message
-                and self.sent_message.message_type == received_message.message_type
+                and sent_message
+                and sent_message.message_type.name == received_message.message_type.name
             ):
-                return self.sent_message.message_type
+                return sent_message.message_type.name
         return None
 
     def sent_message(self, profile):

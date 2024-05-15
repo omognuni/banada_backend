@@ -1,4 +1,4 @@
-from contact.enums import MessageStatus, SNSService
+from contact.enums import MessageStatus, MessageTypeChoices, SNSService
 from django.db import models
 
 
@@ -19,7 +19,7 @@ class SNSInfo(models.Model):
 
 class Message(models.Model):
     sender = models.ForeignKey(
-        "account.Profile", related_name="messages", on_delete=models.CASCADE
+        "account.Profile", related_name="messages", on_delete=models.SET_NULL, null=True
     )
     receiver = models.ForeignKey(
         "account.Profile",
@@ -27,7 +27,9 @@ class Message(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    message_type = models.CharField()
+    message_type = models.ForeignKey(
+        "contact.MessageType", on_delete=models.SET_NULL, null=True
+    )
     content = models.TextField(blank=True)
     status = models.CharField(
         choices=MessageStatus.choices(), max_length=20, default=MessageStatus.WAIT
@@ -36,3 +38,8 @@ class Message(models.Model):
     @property
     def contacts(self):
         return self.sender.contacts.all()
+
+
+class MessageType(models.Model):
+    name = models.CharField(choices=MessageTypeChoices, max_length=20, blank=True)
+    cost = models.IntegerField(blank=True, default=0)
