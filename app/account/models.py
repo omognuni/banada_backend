@@ -36,9 +36,11 @@ class Profile(models.Model):
                 receiver=self, status=MessageStatus.WAIT
             ).values_list("message_type_id", flat=True)
             if received_message:
-                return sent_message.filter(message_type_id__in=received_message)
+                return sent_message.filter(
+                    message_type_id__in=received_message
+                ).values_list("message_type", flat=True)
             else:
-                return sent_message
+                return sent_message.values_list("message_type", flat=True)
 
         return None
 
