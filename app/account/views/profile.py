@@ -14,10 +14,9 @@ from rest_framework.response import Response
 
 @extend_schema_view(
     list=extend_schema(
-        description="요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회",
         tags=["Profile"],
     ),
-    retrieve=extend_schema(description="다른 유저의 프로필을 조회", tags=["Profile"]),
+    retrieve=extend_schema(tags=["Profile"]),
     create=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
     update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
 )
@@ -25,8 +24,14 @@ class ProfileViewset(viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
 
     def list(self, request):
-        """
+        """_summary_
         요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회
+
+        Args:
+            request (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
         service = ProfileService(user=request.user)
         profile = service.fetch_my_profile()
@@ -35,15 +40,31 @@ class ProfileViewset(viewsets.GenericViewSet):
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
     def retrieve(self, request, id):
-        """
+        """_summary_
         다른 유저의 프로필을 조회
+
+        Args:
+            request (_type_): _description_
+            id (_type_): _description_
+
+        Returns:
+            _type_: _description_
         """
-        service = ProfileService(user=request.user)
+        service = ProfileService()
         profile = service.fetch_profile(id)
         output_serializer = ProfileSerializer(profile)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
     def update(self, request):
+        """_summary_
+        자신의 프로필을 업데이트
+
+        Args:
+            request (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         input_serializer = ProfileSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
@@ -54,6 +75,15 @@ class ProfileViewset(viewsets.GenericViewSet):
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
     def create(self, request):
+        """_summary_
+        자신의 프로필을 생성
+
+        Args:
+            request (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         input_serializer = ProfilePostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
@@ -64,6 +94,14 @@ class ProfileViewset(viewsets.GenericViewSet):
         return Response(status=status.HTTP_201_CREATED, data=output_serializer.data)
 
     def delete(self, request):
+        """_summary_
+        자신의 프로필을 삭제
+        Args:
+            request (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         service = ProfileService(user=request.user)
         service.delete_my_profile()
 
@@ -71,6 +109,15 @@ class ProfileViewset(viewsets.GenericViewSet):
 
     @action(methods=["POST"], detail=False)
     def answer(self, request):
+        """_summary_
+        연애 시뮬레이션에 대한 답변을 등록
+
+        Args:
+            request (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         input_serializer = ProfileAnswerPostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
@@ -82,6 +129,15 @@ class ProfileViewset(viewsets.GenericViewSet):
 
     @action(methods=["PATCH"], detail=True)
     def update_answer(self, request, answer_id):
+        """_summary_
+        연애 시뮬레이션에 대한 답변을 수정
+        Args:
+            request (_type_): _description_
+            answer_id (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         input_serializer = ProfileAnswerPatchSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 

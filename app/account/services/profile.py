@@ -1,11 +1,11 @@
-from account.models import Profile, ProfileImage, Answer
+from account.models import Answer, Profile, ProfileImage
 from core.utils import exception
 from django.contrib.auth import get_user_model
 
 
 class ProfileService:
 
-    def __init__(self, user):
+    def __init__(self, user=None):
         self._user = user
 
     def _my_profile(self):
@@ -54,13 +54,13 @@ class ProfileService:
     def create_answer(self, validated_data):
         profile = self._my_profile()
         Answer.objects.create(profile=profile, **validated_data)
-        
+
     def update_answer(self, answer_id, validated_data):
         try:
             answer = Answer.objects.get(id=answer_id)
         except Answer.DoesNotExist:
             raise exception.DoesNotExists
-        
+
         for key, value in validated_data.items():
             setattr(answer, key, value)
         answer.save()
