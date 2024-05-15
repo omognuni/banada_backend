@@ -28,27 +28,26 @@ class Profile(models.Model):
 
     def has_match(self, profile):
         # self = 상대방, profile = 나
-        # 상대방이 나한테 보낸 메시지 중 WAIT 상태인 첫 번째 메시지
-
-        if self.sent_message:
-            # 상대방이 나한테 받은 메시지 중 WAIT 상태인 첫 번째 메시지
+        # 상대방이 나한테 보낸 메시지 중 WAIT 상태인 메시지
+        sent_message = self.sent_message(profile)
+        if sent_message:
+            # 상대방이 나한테 받은 메시지 중 WAIT 상태인 메시지
             received_message = profile.messages.filter(
                 receiver=self, status=MessageStatus.WAIT
-            ).first()
+            ).values_list("message_type_id", flat=True)
+            if received_message:
+                return sent_message.filter(
+                    message_type_id__in=received_message
+                ).values_list("message_type", flat=True)
+            else:
+                return sent_message.values_list("message_type", flat=True)
 
-            if (
-                received_message
-                and self.sent_message.message_type == received_message.message_type
-            ):
-                return self.sent_message.message_type
         return None
 
     def sent_message(self, profile):
-        sent_message = self.messages.filter(
-            receiver=profile, status=MessageStatus.WAIT
-        ).first()
+        sent_message = self.messages.filter(receiver=profile, status=MessageStatus.WAIT)
 
-        if sent_message:
+        if sent_message.exists():
             return sent_message
         return None
 

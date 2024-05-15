@@ -12,7 +12,7 @@ class MessageStatus(Choices):
     REFUSE = "refuse"
 
 
-class MessageType(Choices):
+class MessageTypeChoices(Choices):
     MESSAGE = "message"
     RING = "ring"
     HEART = "heart"
