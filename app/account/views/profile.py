@@ -27,6 +27,8 @@ class ProfileViewset(viewsets.GenericViewSet):
 
     def list(self, request):
         """
+        페이지 -  마이페이지
+
         요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회
         """
         service = ProfileService(user=request.user)
@@ -37,16 +39,22 @@ class ProfileViewset(viewsets.GenericViewSet):
 
     def retrieve(self, request, id):
         """
+        페이지 - 홈, 하트/상세프로필
+
         다른 유저의 프로필을 조회
+        다른 유저가 보낸 하트/반지 표시
+        다른 유저와 나의 궁합
         """
         service = ProfileService(user=request.user)
         (profile, messages) = service.fetch_profile(id)
         output_serializer = ProfileSerializer(profile)
-        data = output_serializer.data["match_type"] = messages
+        data = output_serializer.data["message_type"] = messages
         return Response(status=status.HTTP_200_OK, data=data)
 
     def partial_update(self, request):
         """
+        페이지 - 마이페이지 프로필 수정, 자기 소개 수정
+
         자신의 프로필을 업데이트
         """
         input_serializer = ProfileSerializer(data=request.data)
@@ -83,6 +91,8 @@ class ProfileViewset(viewsets.GenericViewSet):
     @action(methods=["POST"], detail=False)
     def answer(self, request):
         """
+        페이지 - 연애 시뮬레이션
+
         연애 시뮬레이션에 대한 답변을 등록
         """
         input_serializer = ProfileAnswerPostSerializer(data=request.data)
@@ -97,6 +107,8 @@ class ProfileViewset(viewsets.GenericViewSet):
     @action(methods=["PATCH"], detail=True)
     def update_answer(self, request, answer_id):
         """
+        페이지 - 연애 시뮬레이션
+
         연애 시뮬레이션에 대한 답변을 수정
         """
         input_serializer = ProfileAnswerPatchSerializer(data=request.data)

@@ -1,3 +1,4 @@
+from account.models import Profile, ProfileImage
 from contact.models import Contact, Message, MessageType, SNSInfo
 from rest_framework import serializers
 
@@ -22,6 +23,21 @@ class MessageTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MessageType
         fields = ("id", "name", "cost")
+
+
+class MessageProfileImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProfileImage
+        fields = ("id", "image")
+
+
+class MessageProfileSerializer(serializers.ModelSerializer):
+    images = MessageProfileImageSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Profile
+        fields = ("id", "nickname", "age", "images")
 
 
 class MessageSerializer(serializers.ModelSerializer):

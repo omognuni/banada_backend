@@ -19,6 +19,7 @@ class Profile(models.Model):
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
     nickname = models.CharField(max_length=20, blank=True)
+    age = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     job = models.CharField(max_length=20, blank=True)
     residence = models.CharField(max_length=200, blank=True)
