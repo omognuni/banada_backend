@@ -19,6 +19,8 @@ from rest_framework.response import Response
     retrieve=extend_schema(tags=["Profile"]),
     create=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
     update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
+    answer=extend_schema(request=ProfileAnswerPostSerializer, tags=["Profile"]),
+    update_answer=extend_schema(request=ProfileAnswerPatchSerializer, tags=["Profile"]),
 )
 class ProfileViewset(viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
