@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
+@extend_schema(tags=["message"])
 class MessageViewset(viewsets.GenericViewSet):
     serializer_class = MessageSerializer
 
@@ -25,6 +26,7 @@ class MessageViewset(viewsets.GenericViewSet):
 
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(request=MessagePostSerializer)
     def create(self, request):
         input_serializer = MessagePostSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
