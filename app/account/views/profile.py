@@ -102,7 +102,7 @@ class ProfileViewset(viewsets.GenericViewSet):
         input_serializer.is_valid(raise_exception=True)
 
         service = ProfileService(user=request.user)
-        answer = service.update_answer(input_serializer.validated_data)
+        answer = service.update_answer(answer_id, input_serializer.validated_data)
 
         output_serializer = ProfileAnswerSerializer(answer)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
