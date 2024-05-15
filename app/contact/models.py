@@ -41,5 +41,7 @@ class Message(models.Model):
 
 
 class MessageType(models.Model):
-    name = models.CharField(choices=MessageTypeChoices, max_length=20, blank=True)
+    name = models.CharField(
+        choices=MessageTypeChoices.choices(), max_length=20, blank=True
+    )
     cost = models.IntegerField(blank=True, default=0)
