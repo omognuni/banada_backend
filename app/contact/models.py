@@ -27,6 +27,7 @@ class Message(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
+    message_type = models.CharField()
     content = models.TextField(blank=True)
     status = models.CharField(
         choices=MessageStatus.choices(), max_length=20, default=MessageStatus.WAIT

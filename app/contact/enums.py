@@ -7,6 +7,12 @@ class SNSService(Choices):
 
 
 class MessageStatus(Choices):
-    ACCEPT = "승낙"
-    WAIT = "대기중"
-    REFUSE = "거절"
+    ACCEPT = "accept"
+    WAIT = "pending"
+    REFUSE = "refuse"
+
+
+class MessageType(Choices):
+    MESSAGE = "message"
+    RING = "ring"
+    HEART = "heart"
