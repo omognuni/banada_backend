@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from account.enums import CategoryChoices
+from account.enums import CategoryChoices, GenderChoices
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
 from django.contrib.auth import get_user_model
@@ -20,6 +20,9 @@ class Profile(SoftDeletedModel, TimeStampModel):
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
     nickname = models.CharField(max_length=20, blank=True)
+    gender = models.CharField(
+        max_length=20, choices=GenderChoices.choices(), blank=True
+    )
     age = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
     job = models.CharField(max_length=20, blank=True)

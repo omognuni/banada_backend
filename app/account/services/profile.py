@@ -27,6 +27,12 @@ class ProfileService:
             raise exception.DoesNotExists
         return profile, message_type
 
+    def fetch_random_profiles(self):
+        my_profile = self._my_profile()
+        profiles = Profile.objects.filter().exclude(id=my_profile.id)
+
+        pass
+
     def update_my_profile(self, validated_data):
         images = validated_data.pop("images", [])
         profile = self._my_profile()
