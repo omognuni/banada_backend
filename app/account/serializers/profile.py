@@ -63,8 +63,8 @@ class ProfilePostSerializer(serializers.ModelSerializer):
 
 class ProfileAnswerPostSerializer(serializers.Serializer):
     simulation_id = serializers.IntegerField()
-    answer = serializers.CharField()
+    answer_choice_id = serializers.IntegerField()
 
 
 class ProfileAnswerPatchSerializer(serializers.Serializer):
-    answer = serializers.CharField()
+    answer_choice_id = serializers.CharField()
