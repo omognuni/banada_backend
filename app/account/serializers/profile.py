@@ -1,12 +1,13 @@
-from account.models import Answer, Profile, ProfileImage
+from account.models import Profile, ProfileAnswer, ProfileImage
 from rest_framework import serializers
 
 
 class ProfileAnswerSerializer(serializers.ModelSerializer):
     question = serializers.CharField()
+    answer = serializers.CharField()
 
     class Meta:
-        model = Answer
+        model = ProfileAnswer
         fields = ("id", "question", "answer")
         read_only_fields = ("id",)
 

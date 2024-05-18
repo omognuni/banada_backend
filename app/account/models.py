@@ -69,20 +69,27 @@ class Simulation(SoftDeletedModel, TimeStampModel):
 
 
 class AnswerChoice(models.Model):
-    pass
+    simulation = models.ForeignKey(
+        "Simulation", related_name="answer_choices", on_delete=models.CASCADE
+    )
+    index = models.IntegerField(unique=True, blank=True, null=True)
+    content = models.CharField(max_length=200, blank=True)
 
 
-class Answer(SoftDeletedModel, TimeStampModel):
+class ProfileAnswer(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
         "Profile", related_name="answers", on_delete=models.CASCADE
     )
-    simulation = models.ForeignKey(
-        "Simulation", related_name="answers", on_delete=models.CASCADE
-    )
-    answer = models.CharField(max_length=200, blank=True)
+    simulation = models.ForeignKey("Simulation", on_delete=models.CASCADE)
+    answer_choice = models.ForeignKey("AnswerChoice", on_delete=models.CASCADE)
 
     @property
     def question(self):
         if self.simulation:
             return self.simulation.question
         return
+
+    @property
+    def answer(self):
+        if self.answer_choice:
+            return self.answer_choice.content
