@@ -1,15 +1,16 @@
 from contact.enums import MessageStatus, MessageTypeChoices, SNSService
+from core.models import SoftDeletedModel, TimeStampModel
 from django.db import models
 
 
-class Contact(models.Model):
+class Contact(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
         "account.Profile", related_name="contacts", on_delete=models.CASCADE
     )
     phone_number = models.CharField(max_length=20, blank=True)
 
 
-class SNSInfo(models.Model):
+class SNSInfo(SoftDeletedModel, TimeStampModel):
     contact = models.ForeignKey(
         "contact.Contact", related_name="snsinfos", on_delete=models.CASCADE, null=True
     )
@@ -17,7 +18,7 @@ class SNSInfo(models.Model):
     username = models.CharField(max_length=20, blank=True)
 
 
-class Message(models.Model):
+class Message(SoftDeletedModel, TimeStampModel):
     sender = models.ForeignKey(
         "account.Profile", related_name="messages", on_delete=models.SET_NULL, null=True
     )

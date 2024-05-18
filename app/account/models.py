@@ -3,6 +3,7 @@ import uuid
 
 from account.enums import CategoryChoices
 from contact.enums import MessageStatus
+from core.models import SoftDeletedModel, TimeStampModel
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -14,7 +15,7 @@ def profile_image_file_path(instance, filename):
     return os.path.join("uploads", "profile", filename)
 
 
-class Profile(models.Model):
+class Profile(SoftDeletedModel, TimeStampModel):
     user = models.ForeignKey(
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
@@ -53,21 +54,25 @@ class Profile(models.Model):
         return None
 
 
-class ProfileImage(models.Model):
+class ProfileImage(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
         "Profile", related_name="images", on_delete=models.CASCADE
     )
     image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
 
 
-class Simulation(models.Model):
+class Simulation(SoftDeletedModel, TimeStampModel):
     category = models.CharField(
         max_length=20, choices=CategoryChoices.choices(), blank=True
     )
     question = models.CharField(max_length=200, blank=True)
 
 
-class Answer(models.Model):
+class AnswerChoice(models.Model):
+    pass
+
+
+class Answer(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
         "Profile", related_name="answers", on_delete=models.CASCADE
     )
