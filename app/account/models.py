@@ -31,6 +31,11 @@ class Profile(SoftDeletedModel, TimeStampModel):
     is_smoke = models.BooleanField(blank=True, default=False)
     drinking_frequency = models.CharField(max_length=20, blank=True)
 
+    @property
+    def main_image(self):
+        image = self.images.filter(is_main=True).first()
+        return image
+
     def has_match(self, profile):
         # self = 상대방, profile = 나
         # 상대방이 나한테 보낸 메시지 중 WAIT 상태인 메시지
@@ -62,6 +67,7 @@ class ProfileImage(SoftDeletedModel, TimeStampModel):
         "Profile", related_name="images", on_delete=models.CASCADE
     )
     image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
+    is_main = models.BooleanField(default=False)
 
 
 class Simulation(SoftDeletedModel, TimeStampModel):

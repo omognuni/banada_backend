@@ -20,7 +20,15 @@ class ProfileImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileListSerializer(serializers.ModelSerializer):
+    main_image = serializers.ImageField()
+
+    class Meta:
+        model = Profile
+        fields = ("id", "nickname", "age", "height", "main_image")
+
+
+class ProfileDetailSerializer(serializers.ModelSerializer):
     images = ProfileImageSerializer(many=True, read_only=True)
     answers = ProfileAnswerSerializer(many=True, read_only=True)
 

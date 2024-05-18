@@ -2,8 +2,9 @@ from account.serializers.profile import (
     ProfileAnswerPatchSerializer,
     ProfileAnswerPostSerializer,
     ProfileAnswerSerializer,
+    ProfileDetailSerializer,
+    ProfileListSerializer,
     ProfilePostSerializer,
-    ProfileSerializer,
 )
 from account.services.profile import ProfileService
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -23,7 +24,7 @@ from rest_framework.response import Response
     update_answer=extend_schema(request=ProfileAnswerPatchSerializer, tags=["Profile"]),
 )
 class ProfileViewset(viewsets.GenericViewSet):
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileDetailSerializer
 
     def list(self, request):
         """
@@ -33,7 +34,7 @@ class ProfileViewset(viewsets.GenericViewSet):
         """
         service = ProfileService(user=request.user)
         profile = service.fetch_my_profile()
-        output_serializer = ProfileSerializer(profile)
+        output_serializer = ProfileDetailSerializer(profile)
 
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
@@ -47,7 +48,7 @@ class ProfileViewset(viewsets.GenericViewSet):
         """
         service = ProfileService(user=request.user)
         (profile, messages) = service.fetch_profile(id)
-        output_serializer = ProfileSerializer(profile)
+        output_serializer = ProfileDetailSerializer(profile)
         data = output_serializer.data["message_type"] = messages
         return Response(status=status.HTTP_200_OK, data=data)
 
@@ -57,7 +58,7 @@ class ProfileViewset(viewsets.GenericViewSet):
 
         자신의 프로필을 업데이트
         """
-        input_serializer = ProfileSerializer(data=request.data)
+        input_serializer = ProfileDetailSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
 
         service = ProfileService(user=request.user)
@@ -76,7 +77,7 @@ class ProfileViewset(viewsets.GenericViewSet):
         service = ProfileService(user=request.user)
         profile = service.create_my_profile(input_serializer.validated_data)
 
-        output_serializer = ProfileSerializer(profile)
+        output_serializer = ProfileDetailSerializer(profile)
         return Response(status=status.HTTP_201_CREATED, data=output_serializer.data)
 
     def delete(self, request):
@@ -87,6 +88,19 @@ class ProfileViewset(viewsets.GenericViewSet):
         service.delete_my_profile()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["GET"], detail=False)
+    def today(self, request):
+        """
+        페이지 - 메인홈 / 홈 1
+
+        하루에 네 번 랜덤으로 소개
+        """
+        service = ProfileService(user=request.user)
+        profiles = service.fetch_random_profiles()
+
+        output_serializer = ProfileListSerializer(profiles, many=True)
+        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
     @action(methods=["POST"], detail=False)
     def answer(self, request):

@@ -1,3 +1,5 @@
+import random
+
 from account.models import Profile, ProfileAnswer, ProfileImage
 from core.utils import exception
 from django.contrib.auth import get_user_model
@@ -28,10 +30,20 @@ class ProfileService:
         return profile, message_type
 
     def fetch_random_profiles(self):
-        my_profile = self._my_profile()
-        profiles = Profile.objects.filter().exclude(id=my_profile.id)
+        DEFAULT_RANDOM_COUNT = 4
 
-        pass
+        my_profile = self._my_profile()
+        max_id = Profile.objects.last().id
+        sample_ids = set()
+
+        while len(sample_ids) < DEFAULT_RANDOM_COUNT:
+            sample_ids.add(random.randint(1, max_id))
+
+        profiles = Profile.objects.filter(id__in=sample_ids).exclude(
+            id=my_profile.id, gender=my_profile.gender
+        )[:DEFAULT_RANDOM_COUNT]
+
+        return profiles
 
     def update_my_profile(self, validated_data):
         images = validated_data.pop("images", [])
