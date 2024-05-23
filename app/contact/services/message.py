@@ -7,7 +7,7 @@ class MessageService:
         self._user = user
 
     def fetch_received_messages(self):
-        messages = Message.objects.filter(reciever=self._user)
+        messages = Message.objects.filter(receiver=self._user)
 
         return messages
 
