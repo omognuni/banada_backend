@@ -1,10 +1,10 @@
 from contact.models import Message
-
+from account.models import Profile
 
 class MessageService:
 
     def __init__(self, user):
-        self._user = user
+        self._user = Profile.objects.get(user=user)
 
     def fetch_received_messages(self):
         messages = Message.objects.filter(receiver=self._user)
