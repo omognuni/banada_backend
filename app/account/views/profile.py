@@ -23,7 +23,7 @@ from rest_framework.response import Response
     answer=extend_schema(request=ProfileAnswerPostSerializer, tags=["Profile"]),
     update_answer=extend_schema(request=ProfileAnswerPatchSerializer, tags=["Profile"]),
 )
-class ProfileViewset(viewsets.GenericViewSet):
+class ProfileViewSet(viewsets.GenericViewSet):
     serializer_class = ProfileDetailSerializer
 
     def list(self, request):
