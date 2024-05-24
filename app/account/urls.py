@@ -9,6 +9,6 @@ app_name = "account"
 router = SimpleRouter()
 router.register("profiles", ProfileViewSet, "profile")
 router.register("simulations", SimulationViewSet, "simulation")
-router.register("users", UserViewSet, "simulation")
+router.register("users", UserViewSet, "user")
 
 urlpatterns = [path("", include(router.urls))]
