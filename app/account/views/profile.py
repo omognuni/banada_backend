@@ -20,8 +20,17 @@ from rest_framework.response import Response
     retrieve=extend_schema(tags=["Profile"]),
     create=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
     partial_update=extend_schema(request=ProfilePostSerializer, tags=["Profile"]),
-    answer=extend_schema(request=ProfileAnswerPostSerializer, tags=["Profile"]),
-    update_answer=extend_schema(request=ProfileAnswerPatchSerializer, tags=["Profile"]),
+    answer=extend_schema(
+        request=ProfileAnswerPostSerializer,
+        responses=ProfileAnswerSerializer,
+        tags=["Profile"],
+    ),
+    update_answer=extend_schema(
+        request=ProfileAnswerPatchSerializer,
+        responses=ProfileAnswerSerializer,
+        tags=["Profile"],
+    ),
+    today=extend_schema(tags=["Profile"], responses=ProfileListSerializer),
 )
 class ProfileViewSet(viewsets.GenericViewSet):
     serializer_class = ProfileDetailSerializer
