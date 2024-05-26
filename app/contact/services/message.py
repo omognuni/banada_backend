@@ -23,9 +23,10 @@ class MessageService:
         message = Message.objects.create(**validated_data)
         return message
 
-    def update_message(self, id, validated_data):
-        message = Message.objects.filter(id=id).update(**validated_data)
-        return message
+    def update_message(self, pk, validated_data):
+        message = Message.objects.filter(id=pk)
+        message.update(**validated_data)
+        return message.first()
 
     def past_match(self):
         # 내가 메시지를 보냈을때 거절(만료) 당한 경우

@@ -2,6 +2,7 @@ import pytest
 from account.models import Profile
 from contact.models import Contact
 from django.contrib.auth import get_user_model
+from rest_framework.test import APIClient
 
 
 @pytest.fixture
@@ -28,3 +29,28 @@ def receiver(nickname="receiver"):
     profile = Profile.objects.create(**profile_data)
     Contact.objects.create(profile=profile, phone_number="010-1000-1234")
     return profile
+
+
+@pytest.fixture
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture
+def user():
+    User = get_user_model()
+    return User.objects.create_user(username="testuser", password="testpass")
+
+
+@pytest.fixture
+def profile(user):
+    return Profile.objects.create(user=user, nickname="testprofile")
+
+
+@pytest.fixture
+def another_profile():
+    User = get_user_model()
+    another_user = User.objects.create_user(
+        username="anotheruser", password="anotherpass"
+    )
+    return Profile.objects.create(user=another_user, nickname="anotherprofile")

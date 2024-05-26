@@ -56,8 +56,8 @@ class MessageViewset(viewsets.GenericViewSet):
         output_serializer = self.get_serializer(message)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
-    @extend_schema(request=MessagePostSerializer)
-    def partial_update(self, request, id):
+    @extend_schema(request=MessagePatchSerializer)
+    def partial_update(self, request, pk):
         """
         페이지 - 연락탭 / 메시지 수락 / 메시지 거절
 
@@ -70,7 +70,7 @@ class MessageViewset(viewsets.GenericViewSet):
         input_serializer.is_valid(raise_exception=True)
 
         service = MessageService(request.user)
-        message = service.update_message(id, input_serializer.validated_data)
+        message = service.update_message(pk, input_serializer.validated_data)
 
         ouput_serializer = self.get_serializer(message)
         return Response(ouput_serializer.data, status=status.HTTP_200_OK)

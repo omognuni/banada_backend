@@ -47,7 +47,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
 
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
-    def retrieve(self, request, id):
+    def retrieve(self, request, pk):
         """
         페이지 - 홈, 하트/상세프로필
 
@@ -56,12 +56,12 @@ class ProfileViewSet(viewsets.GenericViewSet):
         다른 유저와 나의 궁합
         """
         service = ProfileService(user=request.user)
-        (profile, messages) = service.fetch_profile(id)
+        (profile, messages) = service.fetch_profile(pk)
         output_serializer = ProfileDetailSerializer(profile)
-        data = output_serializer.data["message_type"] = messages
-        return Response(status=status.HTTP_200_OK, data=data)
+        output_serializer.data["message_type"] = messages
+        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
-    def partial_update(self, request):
+    def partial_update(self, request, pk):
         """
         페이지 - 마이페이지 프로필 수정, 자기 소개 수정
 
@@ -89,7 +89,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
         output_serializer = ProfileDetailSerializer(profile)
         return Response(status=status.HTTP_201_CREATED, data=output_serializer.data)
 
-    def delete(self, request):
+    def delete(self, request, pk):
         """
         자신의 프로필을 삭제
         """
@@ -106,10 +106,17 @@ class ProfileViewSet(viewsets.GenericViewSet):
         하루에 네 번 랜덤으로 소개
         """
         service = ProfileService(user=request.user)
-        profiles = service.fetch_random_profiles()
+        try:
+            profiles = service.fetch_random_profiles()
+            # Debugging: Print or log the fetched profiles
+            print(f"Fetched Profiles: {profiles}")
 
-        output_serializer = ProfileListSerializer(profiles, many=True)
-        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+            output_serializer = ProfileListSerializer(profiles, many=True)
+            return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+        except Exception as e:
+            # Debugging: Print or log the exception
+            print(f"Error: {e}")
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"detail": str(e)})
 
     @action(methods=["POST"], detail=False)
     def answer(self, request):
@@ -128,7 +135,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
         return Response(status=status.HTTP_201_CREATED, data=output_serializer.data)
 
     @action(methods=["PATCH"], detail=True)
-    def update_answer(self, request, answer_id):
+    def update_answer(self, request, pk):
         """
         페이지 - 연애 시뮬레이션
 
@@ -138,7 +145,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
         input_serializer.is_valid(raise_exception=True)
 
         service = ProfileService(user=request.user)
-        answer = service.update_answer(answer_id, input_serializer.validated_data)
+        answer = service.update_answer(pk, input_serializer.validated_data)
 
         output_serializer = ProfileAnswerSerializer(answer)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
