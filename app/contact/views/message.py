@@ -1,3 +1,4 @@
+from account.serializers.profile import ProfileListSerializer
 from contact.serializers.message import (
     MessagePatchSerializer,
     MessagePostSerializer,
@@ -73,3 +74,14 @@ class MessageViewset(viewsets.GenericViewSet):
 
         ouput_serializer = self.get_serializer(message)
         return Response(ouput_serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["GET"], detail=False)
+    def past_match(self, request):
+        """
+        페이지 - 스쳐간 반쪽
+        """
+        service = MessageService(request.user)
+        profiles = service.past_match()
+
+        output_serializer = ProfileListSerializer(profiles, many=True)
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
