@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from contact.enums import MessageStatus, MessageTypeChoices, SNSService
 from core.models import SoftDeletedModel, TimeStampModel
 from django.db import models
@@ -39,6 +41,13 @@ class Message(SoftDeletedModel, TimeStampModel):
     @property
     def contacts(self):
         return self.sender.contacts.all()
+
+    @property
+    def expire(self):
+        WEEK = 7
+        if (self.created_time - datetime.now()).days >= WEEK:
+            self.status = MessageStatus.EXPIRED
+            self.save()
 
 
 class MessageType(models.Model):

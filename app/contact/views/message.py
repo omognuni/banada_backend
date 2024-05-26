@@ -1,4 +1,8 @@
-from contact.serializers.message import MessagePostSerializer, MessageSerializer
+from contact.serializers.message import (
+    MessagePatchSerializer,
+    MessagePostSerializer,
+    MessageSerializer,
+)
 from contact.services.message import MessageService
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
@@ -50,3 +54,22 @@ class MessageViewset(viewsets.GenericViewSet):
 
         output_serializer = self.get_serializer(message)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+    @extend_schema(request=MessagePostSerializer)
+    def partial_update(self, request, id):
+        """
+        페이지 - 연락탭 / 메시지 수락 / 메시지 거절
+
+        메시지의 변경 사항을 업데이트
+        status - accept(수락) / pending(대기) / refuse(거절)
+
+        TODO - 수락 시 발신자에게 매칭 알림
+        """
+        input_serializer = MessagePatchSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        service = MessageService(request.user)
+        message = service.update_message(id, input_serializer.validated_data)
+
+        ouput_serializer = self.get_serializer(message)
+        return Response(ouput_serializer.data, status=status.HTTP_200_OK)

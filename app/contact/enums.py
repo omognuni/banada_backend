@@ -7,9 +7,10 @@ class SNSService(Choices):
 
 
 class MessageStatus(Choices):
-    ACCEPT = "accept"
+    ACCEPTED = "accepted"
     WAIT = "pending"
-    REFUSE = "refuse"
+    REFUSED = "refused"
+    EXPIRED = "expired"
 
 
 class MessageTypeChoices(Choices):

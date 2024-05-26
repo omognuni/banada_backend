@@ -63,3 +63,13 @@ class MessagePostSerializer(serializers.Serializer):
     sender_id = serializers.IntegerField()
     receiver_id = serializers.IntegerField()
     content = serializers.CharField()
+
+
+class MessagePatchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = (
+            "content",
+            "status",
+        )

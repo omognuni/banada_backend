@@ -1,5 +1,8 @@
-from contact.models import Message
 from account.models import Profile
+from contact.enums import MessageStatus
+from contact.models import Message
+from django.db.models import Q
+
 
 class MessageService:
 
@@ -19,3 +22,21 @@ class MessageService:
     def send_message(self, validated_data):
         message = Message.objects.create(**validated_data)
         return message
+
+    def update_message(self, id, validated_data):
+        message = Message.objects.filter(id=id).update(**validated_data)
+        return message
+
+    def past_match(self):
+        # 내가 메시지를 보냈을때 거절(만료) 당한 경우
+        # 상대가 메세지를 보냈는데 만료된 경우
+        # 단방향 호감 표시한 경우
+        messages = self.fetch_sent_messages()
+        profiles = (
+            messages.filter(
+                Q(status=MessageStatus.EXPIRED) | Q(status=MessageStatus.REFUSED)
+            )
+            .values("receiver")
+            .distinct()
+        )
+        return profiles
