@@ -39,8 +39,11 @@ class ProfileService:
         my_profile = self._my_profile()
         max_id = Profile.objects.last().id
         sample_ids = set()
-        for _ in range(DEFAULT_RANDOM_COUNT):
-            sample_ids.add(random.randint(1, max_id))
+        while len(sample_ids) < (DEFAULT_RANDOM_COUNT):
+            sample_id = random.randint(1, max_id)
+            if sample_id == my_profile.id:
+                continue
+            sample_ids.add(sample_id)
 
         profiles = Profile.objects.filter(id__in=sample_ids).exclude(
             id=my_profile.id, gender=my_profile.gender
