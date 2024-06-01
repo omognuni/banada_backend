@@ -173,4 +173,4 @@ class ProfileViewSet(viewsets.GenericViewSet):
         match_result = service.match_answer(pk)
 
         output_serializer = ProfileAnswerValueSerializer(match_result, many=True)
-        return Response(status=status.HTTP_200_OK, data=output_serializer)
+        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
