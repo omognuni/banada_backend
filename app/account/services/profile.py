@@ -17,6 +17,10 @@ class ProfileService:
             raise exception.DoesNotExists
         return profile
 
+    def fetch_profiles(self):
+        profiles = Profile.objects.all()
+        return profiles
+
     def fetch_my_profile(self):
         return self._my_profile()
 

@@ -37,7 +37,20 @@ class ProfileViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         """
-        페이지 -  마이페이지
+        전체 프로필 조회(관리자만 사용 가능)
+
+        TODO - 관리자만 조회 가능
+        """
+        service = ProfileService(user=request.user)
+        profile = service.fetch_profiles()
+        output_serializer = ProfileListSerializer(profile, many=True)
+
+        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+
+    @action(methods=["GET"], detail=False)
+    def my(self, request):
+        """
+        페이지 - 마이 페이지
 
         요청을 보낸 유저의 프로필(마이페이지 - 나의 프로필)을 조회
         """
