@@ -12,10 +12,16 @@ from account.models import (
 from contact.enums import MessageStatus, MessageTypeChoices, SNSService
 from contact.models import Contact, Message, MessageType, SNSInfo
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 from faker import Faker
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-django.setup()
+try:
+    django.setup()
+except ImproperlyConfigured:
+    raise ImproperlyConfigured(
+        "Django settings are not configured properly. Please check the DJANGO_SETTINGS_MODULE environment variable."
+    )
 
 fake = Faker()
 
