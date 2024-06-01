@@ -52,7 +52,6 @@ class ProfileDetailSerializer(serializers.ModelSerializer):
 
 
 class ProfilePostSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)
     images = serializers.ListField(
         child=serializers.ImageField(), write_only=True, required=False
     )
@@ -60,7 +59,6 @@ class ProfilePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = (
-            "id",
             "nickname",
             "height",
             "job",
@@ -70,7 +68,6 @@ class ProfilePostSerializer(serializers.ModelSerializer):
             "drinking_frequency",
             "images",
         )
-        read_only_fields = ("id",)
 
 
 class ProfileAnswerPostSerializer(serializers.Serializer):
