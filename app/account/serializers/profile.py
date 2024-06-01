@@ -29,6 +29,7 @@ class ProfileListSerializer(serializers.ModelSerializer):
 
 
 class ProfileDetailSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     images = ProfileImageSerializer(many=True, read_only=True)
     answers = ProfileAnswerSerializer(many=True, read_only=True)
 
