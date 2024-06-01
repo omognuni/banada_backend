@@ -87,7 +87,7 @@ class AnswerChoice(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["created_time", "simulation", "index"],
+                fields=["simulation", "index"],
                 name="unique_simulation_index",
             )
         ]
