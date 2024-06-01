@@ -77,3 +77,9 @@ class ProfileAnswerPostSerializer(serializers.Serializer):
 
 class ProfileAnswerPatchSerializer(serializers.Serializer):
     answer_choice_id = serializers.CharField()
+
+
+class ProfileAnswerValueSerializer(serializers.Serializer):
+    question = serializers.CharField()
+    answer = serializers.CharField()
+    is_matched = serializers.BooleanField()

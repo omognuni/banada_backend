@@ -2,6 +2,7 @@ from account.serializers.profile import (
     ProfileAnswerPatchSerializer,
     ProfileAnswerPostSerializer,
     ProfileAnswerSerializer,
+    ProfileAnswerValueSerializer,
     ProfileDetailSerializer,
     ProfileListSerializer,
     ProfilePostSerializer,
@@ -162,3 +163,14 @@ class ProfileViewSet(viewsets.GenericViewSet):
 
         output_serializer = ProfileAnswerSerializer(answer)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+
+    @action(methods=["GET"], detail=True)
+    def values(self, request, pk):
+        """
+        페이지 - 가치관 페이지
+        """
+        service = ProfileService(user=request.user)
+        match_result = service.match_answer(pk)
+
+        output_serializer = ProfileAnswerValueSerializer(match_result, many=True)
+        return Response(status=status.HTTP_200_OK, data=output_serializer)

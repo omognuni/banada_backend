@@ -91,3 +91,34 @@ class ProfileService:
             setattr(answer, key, value)
         answer.save()
         return answer
+
+    def match_answer(self, profile_id):
+        my_answers = ProfileAnswer.objects.filter(profile=self._my_profile())
+        other_answers = ProfileAnswer.objects.filter(profile_id=profile_id)
+
+        results = []
+
+        for my_answer in my_answers:
+            other_answer = other_answers.filter(simulation=my_answer.simulation)
+            if other_answer.exists():
+                other_answer = other_answer.first()
+                if other_answer.answer_choice == my_answer.answer_choice:
+                    results.append(
+                        {
+                            "question": other_answer.question,
+                            "answer": other_answer.answer,
+                            "is_matched": True,
+                        }
+                    )
+                else:
+                    results.append(
+                        {
+                            "question": other_answer.question,
+                            "answer": other_answer.answer,
+                            "is_matched": False,
+                        }
+                    )
+            else:
+                continue
+
+        return results
