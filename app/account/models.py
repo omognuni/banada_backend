@@ -84,6 +84,13 @@ class AnswerChoice(models.Model):
     index = models.IntegerField(unique=True, blank=True, null=True)
     content = models.CharField(max_length=200, blank=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["simulation", "index"], name="unique_simulation_index"
+            )
+        ]
+
 
 class ProfileAnswer(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
