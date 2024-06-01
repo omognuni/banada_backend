@@ -81,7 +81,7 @@ class AnswerChoice(models.Model):
     simulation = models.ForeignKey(
         "Simulation", related_name="answer_choices", on_delete=models.CASCADE
     )
-    index = models.IntegerField(unique=True, blank=True, null=True)
+    index = models.IntegerField(blank=True, null=True)
     content = models.CharField(max_length=200, blank=True)
 
     class Meta:
