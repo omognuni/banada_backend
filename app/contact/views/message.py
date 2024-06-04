@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 
 @extend_schema(tags=["message"])
-class MessageViewset(viewsets.GenericViewSet):
+class MessageViewSet(viewsets.GenericViewSet):
     serializer_class = MessageSerializer
 
     @action(methods=["GET"], detail=False)
