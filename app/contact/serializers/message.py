@@ -1,4 +1,5 @@
 from account.models import Profile, ProfileImage
+from contact.enums import MessageTypeChoices
 from contact.models import Contact, Message, MessageType, SNSInfo
 from rest_framework import serializers
 
@@ -62,6 +63,7 @@ class MessageSerializer(serializers.ModelSerializer):
 class MessagePostSerializer(serializers.Serializer):
     sender_id = serializers.IntegerField()
     receiver_id = serializers.IntegerField()
+    message_type_id = serializers.IntegerField(required=False)
     content = serializers.CharField()
 
 
