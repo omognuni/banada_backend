@@ -7,6 +7,10 @@ services:
     expose:
       - "${APP_PORT}"
     restart: always
+    command: >
+      sh -c "python manage.py test &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:${APP_PORT}
+      "
     depends_on:
       - banada-db
 
@@ -14,10 +18,6 @@ services:
     image: postgres:16-alpine
     env_file:
       - .env
-    command: >
-      sh -c "python manage.py test &&
-      gunicorn config.wsgi:application --bind 0.0.0.0:${APP_PORT}
-      "
     volumes:
       - banada-db-data:/var/lib/postgresql/data
 
