@@ -28,3 +28,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/banada_be:latest
+
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/banada_be:latest
