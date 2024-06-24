@@ -20,7 +20,13 @@ RUN python -m venv /py && \
     adduser \
     --disabled-password \
     --no-create-home \
-    django-user
+    django-user && \
+    mkdir -p /app/media && \
+    mkdir -p /app/static && \
+    chown -R django-user:django-user /app/media && \
+    chown -R django-user:django-user /app/static && \
+    chmod -R 755 /app/media && \
+    chmod -R 755 /app/static
 
 ENV PATH="/py/bin:$PATH"
 RUN python manage.py collectstatic
