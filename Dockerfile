@@ -23,5 +23,6 @@ RUN python -m venv /py && \
     django-user
 
 ENV PATH="/py/bin:$PATH"
+RUN python manage.py collectstatic
 
 USER django-user
