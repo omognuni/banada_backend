@@ -8,5 +8,7 @@ class JsonContentTypeMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        response["Content-Type"] = "application/json; charset=utf-8"
+        # Content-Type이 application/json인 경우에만 charset=utf-8을 추가합니다.
+        if response.get("Content-Type", "").startswith("application/json"):
+            response["Content-Type"] = "application/json; charset=utf-8"
         return response
