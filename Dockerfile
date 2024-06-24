@@ -16,19 +16,6 @@ RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     rm -rf /tmp && \
-    apk del .tmp-build-deps && \
-    adduser \
-    --disabled-password \
-    --no-create-home \
-    django-user && \
-    mkdir -p /app/media && \
-    mkdir -p /app/static && \
-    chown -R django-user:django-user /app/media && \
-    chown -R django-user:django-user /app/static && \
-    chmod -R 755 /app/media && \
-    chmod -R 755 /app/static
+    apk del .tmp-build-deps
 
 ENV PATH="/py/bin:$PATH"
-RUN python manage.py collectstatic
-
-USER django-user
