@@ -19,17 +19,17 @@ class Profile(SoftDeletedModel, TimeStampModel):
     user = models.ForeignKey(
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
-    nickname = models.CharField(max_length=20, blank=True)
+    nickname = models.CharField(max_length=200, blank=True)
     gender = models.CharField(
-        max_length=20, choices=GenderChoices.choices(), blank=True
+        max_length=200, choices=GenderChoices.choices(), blank=True
     )
     age = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    job = models.CharField(max_length=20, blank=True)
+    job = models.CharField(max_length=200, blank=True)
     residence = models.CharField(max_length=200, blank=True)
-    religion = models.CharField(max_length=20, blank=True)
+    religion = models.CharField(max_length=200, blank=True)
     is_smoke = models.BooleanField(blank=True, default=False)
-    drinking_frequency = models.CharField(max_length=20, blank=True)
+    drinking_frequency = models.CharField(max_length=200, blank=True)
 
     @property
     def main_image(self):
