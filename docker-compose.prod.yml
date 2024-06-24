@@ -2,20 +2,28 @@ version: "3.9"
 
 services:
   app:
-    env_file:
-      - .env
+    image: melbong/banada_be
     expose:
       - "${APP_PORT}"
     restart: always
     command: >
-      sh -c "python manage.py test &&
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py test &&
       gunicorn config.wsgi:application --bind 0.0.0.0:${APP_PORT}
       "
     depends_on:
       - banada-db
+    env_file:
+      - .env
 
   banada-db:
     image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
     env_file:
       - .env
     volumes:

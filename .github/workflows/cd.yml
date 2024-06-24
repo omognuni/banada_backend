@@ -68,4 +68,4 @@ jobs:
           script: |
             cd /home/${{ secrets.SERVER_USER }}/banada_backend
             docker-compose down --remove-orphans
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+            docker-compose -f docker-compose.prod.yml up -d
