@@ -12,7 +12,7 @@ def test_list_profiles(api_client, user, profile):
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.data["nickname"] == "testprofile"
+    assert response.data[0]["nickname"] == "testprofile"
 
 
 @pytest.mark.django_db

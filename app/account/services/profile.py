@@ -37,18 +37,14 @@ class ProfileService:
         DEFAULT_RANDOM_COUNT = 4
 
         my_profile = self._my_profile()
-        max_id = Profile.objects.last().id
-        sample_ids = set()
-        while len(sample_ids) < (DEFAULT_RANDOM_COUNT):
-            sample_id = random.randint(1, max_id)
-            if sample_id == my_profile.id:
-                continue
-            sample_ids.add(sample_id)
 
-        profiles = Profile.objects.filter(id__in=sample_ids).exclude(
-            id=my_profile.id, gender=my_profile.gender
-        )[:DEFAULT_RANDOM_COUNT]
+        profiles = Profile.objects.exclude(id=my_profile.id).exclude(
+            gender=my_profile.gender
+        )
 
+        MAX_RANDOM_COUNT = max(len(profiles), DEFAULT_RANDOM_COUNT)
+
+        profiles = profiles.order_by("?")[:MAX_RANDOM_COUNT]
         return profiles
 
     def update_my_profile(self, validated_data):
