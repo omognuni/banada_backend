@@ -7,20 +7,19 @@ PROFILE_URL = reverse("account:profile-list")
 
 
 @pytest.mark.django_db
-def test_get_my_profile(user, profile):
+def test_get_my_profile(api_client, user, profile):
 
-    client = APIClient()
-    client.force_authenticate(user)
+    api_client.force_authenticate(user)
 
-    res = client.get(PROFILE_URL)
+    response = api_client.get(PROFILE_URL)
 
-    assert res.status_code == status.HTTP_200_OK
+    assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.django_db
-def test_create_my_profile(user, profile, images):
-    client = APIClient()
-    client.force_authenticate(user)
+def test_create_my_profile(api_client, user, profile, images):
+    api_client = APIClient()
+    api_client.force_authenticate(user)
 
     data = {
         "nickname": "testnick",
@@ -33,6 +32,6 @@ def test_create_my_profile(user, profile, images):
         "images": images,
     }
 
-    res = client.post(PROFILE_URL, data=data)
-    print(res.data)
-    assert res.status_code == status.HTTP_201_CREATED
+    response = api_client.post(PROFILE_URL, data=data)
+
+    assert response.status_code == status.HTTP_201_CREATED

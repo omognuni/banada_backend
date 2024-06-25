@@ -10,7 +10,7 @@ def test_received_messages(api_client, user, profile, another_profile):
     api_client.force_authenticate(user=user)
     Message.objects.create(sender=another_profile, receiver=profile, content="Hello")
 
-    url = reverse("contact:message-received")  # Define this URL pattern in your urls.py
+    url = reverse("contact:message-received")
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
@@ -23,7 +23,7 @@ def test_sent_messages(api_client, user, profile, another_profile):
     api_client.force_authenticate(user=user)
     Message.objects.create(sender=profile, receiver=another_profile, content="Hello")
 
-    url = reverse("contact:message-sent")  # Define this URL pattern in your urls.py
+    url = reverse("contact:message-sent")
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
@@ -40,7 +40,7 @@ def test_create_message(api_client, user, profile, another_profile):
         "content": "Hello",
     }
 
-    url = reverse("contact:message-list")  # Define this URL pattern in your urls.py
+    url = reverse("contact:message-list")
     response = api_client.post(url, data)
 
     assert response.status_code == status.HTTP_201_CREATED
@@ -57,9 +57,7 @@ def test_partial_update_message(api_client, user, profile, another_profile):
 
     data = {"content": "Updated content", "status": MessageStatus.ACCEPTED}
 
-    url = reverse(
-        "contact:message-detail", args=[message.id]
-    )  # Define this URL pattern in your urls.py
+    url = reverse("contact:message-detail", args=[message.id])
     response = api_client.patch(url, data)
     print(response.data)
 
@@ -72,10 +70,7 @@ def test_partial_update_message(api_client, user, profile, another_profile):
 def test_past_match(api_client, user, profile, another_profile):
     api_client.force_authenticate(user=user)
 
-    url = reverse(
-        "contact:message-past-match"
-    )  # Define this URL pattern in your urls.py
+    url = reverse("contact:message-past-match")
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    # Additional assertions based on the expected data format

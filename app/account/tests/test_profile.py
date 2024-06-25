@@ -8,7 +8,7 @@ from rest_framework import status
 def test_list_profiles(api_client, user, profile):
     api_client.force_authenticate(user=user)
 
-    url = reverse("account:profile-list")  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-list")
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
@@ -19,9 +19,7 @@ def test_list_profiles(api_client, user, profile):
 def test_retrieve_profile(api_client, user, profile, another_profile):
     api_client.force_authenticate(user=user)
 
-    url = reverse(
-        "account:profile-detail", args=[another_profile.id]
-    )  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-detail", args=[another_profile.id])
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
@@ -42,7 +40,7 @@ def test_create_profile(api_client, user):
         "drinking_frequency": "Often",
     }
 
-    url = reverse("account:profile-list")  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-list")
     response = api_client.post(url, data)
 
     assert response.status_code == status.HTTP_201_CREATED
@@ -56,9 +54,7 @@ def test_partial_update_profile(api_client, user, profile):
 
     data = {"nickname": "updatedprofile"}
 
-    url = reverse(
-        "account:profile-detail", args=[profile.id]
-    )  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-detail", args=[profile.id])
     response = api_client.patch(url, data)
 
     assert response.status_code == status.HTTP_200_OK
@@ -69,9 +65,7 @@ def test_partial_update_profile(api_client, user, profile):
 def test_delete_profile(api_client, user, profile):
     api_client.force_authenticate(user=user)
 
-    url = reverse(
-        "account:profile-detail", args=[profile.id]
-    )  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-detail", args=[profile.id])
     response = api_client.delete(url)
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
@@ -86,7 +80,6 @@ def test_today_profiles(api_client, user, profile):
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    # Additional assertions based on the expected data format
 
 
 @pytest.mark.django_db
@@ -95,7 +88,7 @@ def test_create_profile_answer(api_client, user, profile, simulation, answer_cho
 
     data = {"simulation_id": simulation.id, "answer_choice_id": answer_choice.id}
 
-    url = reverse("account:profile-answer")  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-answer")
     response = api_client.post(url, data)
 
     assert response.status_code == status.HTTP_201_CREATED
@@ -108,9 +101,7 @@ def test_update_profile_answer(api_client, user, profile_answer, answer_choice):
 
     data = {"answer_choice_id": answer_choice.id}
 
-    url = reverse(
-        "account:profile-update-answer", args=[profile_answer.id]
-    )  # Define this URL pattern in your urls.py
+    url = reverse("account:profile-update-answer", args=[profile_answer.id])
     response = api_client.patch(url, data)
 
     assert response.status_code == status.HTTP_200_OK
