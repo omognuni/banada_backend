@@ -19,7 +19,8 @@ class Profile(SoftDeletedModel, TimeStampModel):
     user = models.ForeignKey(
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
-    nickname = models.CharField(max_length=200, blank=True)
+    nickname = models.CharField(max_length=200, null=True, unique=True)
+    phone = models.CharField(max_length=200, null=True, unique=True)
     gender = models.CharField(
         max_length=200, choices=GenderChoices.choices(), blank=True
     )
@@ -38,13 +39,13 @@ class Profile(SoftDeletedModel, TimeStampModel):
 
     def has_match(self, profile):
         # self = 상대방, profile = 나
-        # 상대방이 나한테 보낸 메시지 중 WAIT 상태인 메시지
+        # 상대방이 나한테 보낸 메시지
         sent_message = self.sent_message(profile)
         if sent_message:
-            # 상대방이 나한테 받은 메시지 중 WAIT 상태인 메시지
-            received_message = profile.messages.filter(
-                receiver=self, status=MessageStatus.WAIT
-            ).values_list("message_type_id", flat=True)
+            # 상대방이 나한테 받은 메시지
+            received_message = profile.sent_message(self).values_list(
+                "message_type_id", flat=True
+            )
             if received_message:
                 return sent_message.filter(
                     message_type_id__in=received_message
@@ -55,7 +56,7 @@ class Profile(SoftDeletedModel, TimeStampModel):
         return None
 
     def sent_message(self, profile):
-        sent_message = self.messages.filter(receiver=profile, status=MessageStatus.WAIT)
+        sent_message = self.messages.filter(receiver=profile)
 
         if sent_message.exists():
             return sent_message

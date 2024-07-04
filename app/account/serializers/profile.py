@@ -64,6 +64,7 @@ class ProfilePostSerializer(serializers.ModelSerializer):
             "job",
             "residence",
             "religion",
+            "phone",
             "is_smoke",
             "drinking_frequency",
             "images",
@@ -83,3 +84,8 @@ class ProfileAnswerValueSerializer(serializers.Serializer):
     question = serializers.CharField()
     answer = serializers.CharField()
     is_matched = serializers.BooleanField()
+
+
+class ProfileValidationSerializer(serializers.Serializer):
+    profile_id = serializers.IntegerField(required=False)
+    nickname = serializers.CharField(required=False)

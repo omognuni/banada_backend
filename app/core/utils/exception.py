@@ -31,6 +31,6 @@ class DoesNotExists(APIException):
     default_detail = "요청한 데이터가 존재하지 않습니다."
 
 
-class NotBusinessHours(APIException):
+class PhoneNotExists(APIException):
     status_code = 400
-    default_detail = "영업 시간이 아닙니다."
+    default_detail = "핸드폰이 등록되지 않았습니다."

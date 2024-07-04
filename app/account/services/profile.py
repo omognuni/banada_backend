@@ -1,8 +1,8 @@
 import random
 
 from account.models import Profile, ProfileAnswer, ProfileImage
+from contact.enums import MessageStatus
 from core.utils import exception
-from django.contrib.auth import get_user_model
 
 
 class ProfileService:
@@ -87,6 +87,23 @@ class ProfileService:
             setattr(answer, key, value)
         answer.save()
         return answer
+
+    def validate(self, validated_data):
+        profile_id = validated_data.get("profile_id")
+        nickname = validated_data.get("nickname")
+
+        if profile_id:
+            try:
+                profile = Profile.objects.get(id=profile_id)
+            except:
+                raise exception.DoesNotExists
+        else:
+            profile = self._my_profile()
+
+        if nickname and Profile.objects.filter(nickname=nickname).exists():
+            raise exception.AlreadyExists
+        elif profile.phone is None:
+            raise exception.PhoneNotExists
 
     def match_answer(self, profile_id):
         my_answers = ProfileAnswer.objects.filter(profile=self._my_profile())
