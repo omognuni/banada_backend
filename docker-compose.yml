@@ -10,8 +10,7 @@ services:
     command: >
       sh -c "python manage.py makemigrations &&
             python manage.py migrate &&
-            python manage.py runserver 0.0.0.0:${APP_PORT}
+            python manage.py runserver 0.0.0.0:8000
             "
     environment:
-      - APP_PORT=8000
       - DJANGO_SETTINGS_MODULE=config.settings.local
