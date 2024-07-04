@@ -9,21 +9,9 @@ services:
       - ./app:/app
     command: >
       sh -c "python manage.py makemigrations &&
-            python manage.py migrate
+            python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:${APP_PORT}
             "
-    env_file:
-      - .env
-
-  banada-db:
-    image: postgres:16-alpine
-    volumes:
-      - banada-db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-    env_file:
-      - .env
-
-volumes:
-  banada-db-data:
+      - APP_PORT=8000
+      - DJANGO_SETTINGS_MODULE=config.settings.local
