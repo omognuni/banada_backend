@@ -35,6 +35,7 @@ from rest_framework.response import Response
     my=extend_schema(tags=["Profile"]),
     today=extend_schema(tags=["Profile"], responses=ProfileListSerializer),
     values=extend_schema(tags=["Profile"], responses=ProfileAnswerValueSerializer),
+    validation=extend_schema(tags=["Profile"], request=ProfileValidationSerializer),
 )
 class ProfileViewSet(viewsets.GenericViewSet):
     serializer_class = ProfileDetailSerializer
