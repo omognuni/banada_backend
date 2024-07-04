@@ -27,7 +27,7 @@ class Profile(SoftDeletedModel, TimeStampModel):
         validators=[
             RegexValidator(
                 regex=r"^(\+82|0)?1[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
-                message="유효한 전화번호 형식이 아닙니다.",
+                message="유효한 전화번호 형식이 아닙니다: 010-1234-5678 혹은 +82-10-1234-5678",
             )
         ],
     )
