@@ -20,7 +20,7 @@ class MessageViewSet(viewsets.GenericViewSet):
         """
         페이지 - 하트/내가 받은 반지/하트
 
-        TODO - 서로 받은 경우 표시
+        is_match = True 인 경우 서로에게 호감 표현
         """
 
         service = MessageService(request.user)

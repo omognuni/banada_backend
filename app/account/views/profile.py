@@ -128,14 +128,10 @@ class ProfileViewSet(viewsets.GenericViewSet):
         service = ProfileService(user=request.user)
         try:
             profiles = service.fetch_random_profiles()
-            # Debugging: Print or log the fetched profiles
-            print(f"Fetched Profiles: {profiles}")
 
             output_serializer = ProfileListSerializer(profiles, many=True)
             return Response(status=status.HTTP_200_OK, data=output_serializer.data)
         except Exception as e:
-            # Debugging: Print or log the exception
-            print(f"Error: {e}")
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"detail": str(e)})
 
     @action(methods=["POST"], detail=False)

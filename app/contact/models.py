@@ -43,6 +43,17 @@ class Message(SoftDeletedModel, TimeStampModel):
         return self.sender.contacts.all()
 
     @property
+    def is_match(self):
+        if Message.objects.filter(
+            receiver=self.sender,
+            sender=self.receiver,
+            message_type=self.message_type,
+            status=MessageStatus.WAIT,
+        ).exists():
+            return True
+        return False
+
+    @property
     def expire(self):
         WEEK = 7
         if (self.created_time - datetime.now()).days >= WEEK:

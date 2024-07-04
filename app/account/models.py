@@ -38,20 +38,13 @@ class Profile(SoftDeletedModel, TimeStampModel):
         return image
 
     def has_match(self, profile):
-        # self = 상대방, profile = 나
-        # 상대방이 나한테 보낸 메시지
         sent_message = self.sent_message(profile)
         if sent_message:
-            # 상대방이 나한테 받은 메시지
-            received_message = profile.sent_message(self).values_list(
-                "message_type_id", flat=True
-            )
+            received_message = profile.sent_message(self)
             if received_message:
-                return sent_message.filter(
-                    message_type_id__in=received_message
-                ).values_list("message_type", flat=True)
+                return sent_message.filter(message_type_id__in=received_message)
             else:
-                return sent_message.values_list("message_type", flat=True)
+                return sent_message
 
         return None
 

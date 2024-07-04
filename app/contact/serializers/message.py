@@ -46,6 +46,7 @@ class MessageSerializer(serializers.ModelSerializer):
     receiver_name = serializers.CharField(source="receiver.nickname", read_only=True)
     contacts = ContactSerializer(read_only=True, many=True)
     message_type = MessageTypeSerializer(read_only=True)
+    is_match = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Message
@@ -57,6 +58,7 @@ class MessageSerializer(serializers.ModelSerializer):
             "content",
             "status",
             "message_type",
+            "is_match",
         )
 
 
