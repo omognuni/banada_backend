@@ -5,6 +5,7 @@ from account.enums import CategoryChoices, GenderChoices
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
 from django.contrib.auth import get_user_model
+from django.core.validators import RegexValidator
 from django.db import models
 
 
@@ -20,7 +21,15 @@ class Profile(SoftDeletedModel, TimeStampModel):
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
     nickname = models.CharField(max_length=200, null=True, unique=True)
-    phone = models.CharField(max_length=200, null=True, unique=True)
+    phone = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex=r"^(\+82|0)?1[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
+                message="유효한 전화번호 형식이 아닙니다.",
+            )
+        ],
+    )
     gender = models.CharField(
         max_length=200, choices=GenderChoices.choices(), blank=True
     )
