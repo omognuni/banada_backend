@@ -23,6 +23,7 @@ class Profile(SoftDeletedModel, TimeStampModel):
     nickname = models.CharField(max_length=200, null=True, unique=True)
     phone = models.CharField(
         max_length=15,
+        null=True,
         validators=[
             RegexValidator(
                 regex=r"^(\+82|0)?1[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
