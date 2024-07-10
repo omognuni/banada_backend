@@ -52,14 +52,14 @@ class Profile(SoftDeletedModel, TimeStampModel):
         if sent_message:
             received_message = profile.sent_message(self)
             if received_message:
-                return sent_message.filter(message_type_id__in=received_message)
-            else:
-                return sent_message
+                return sent_message.filter(id__in=received_message).values_list(
+                    "message_type__name", flat=True
+                )
 
         return None
 
     def sent_message(self, profile):
-        sent_message = self.messages.filter(receiver=profile)
+        sent_message = self.messages.filter(receiver=profile).exclude(receiver=self)
 
         if sent_message.exists():
             return sent_message

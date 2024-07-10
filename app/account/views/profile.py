@@ -78,8 +78,11 @@ class ProfileViewSet(viewsets.GenericViewSet):
         service = ProfileService(user=request.user)
         (profile, messages) = service.fetch_profile(pk)
         output_serializer = ProfileDetailSerializer(profile)
-        output_serializer.data["matched_message_type"] = messages
-        return Response(status=status.HTTP_200_OK, data=output_serializer.data)
+
+        data = output_serializer.data
+        data["matched_message_type"] = messages
+
+        return Response(status=status.HTTP_200_OK, data=data)
 
     def partial_update(self, request, pk):
         """
