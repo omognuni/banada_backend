@@ -7,7 +7,7 @@ from django.db import models
 
 class Contact(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
-        "account.Profile", related_name="contacts", on_delete=models.CASCADE
+        "profile.Profile", related_name="contacts", on_delete=models.CASCADE
     )
     phone_number = models.CharField(max_length=200, blank=True)
 
@@ -22,10 +22,10 @@ class SNSInfo(SoftDeletedModel, TimeStampModel):
 
 class Message(SoftDeletedModel, TimeStampModel):
     sender = models.ForeignKey(
-        "account.Profile", related_name="messages", on_delete=models.SET_NULL, null=True
+        "profile.Profile", related_name="messages", on_delete=models.SET_NULL, null=True
     )
     receiver = models.ForeignKey(
-        "account.Profile",
+        "profile.Profile",
         related_name="received_messages",
         on_delete=models.SET_NULL,
         null=True,
