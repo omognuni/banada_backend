@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-PROFILE_URL = reverse("account:profile-list")
+PROFILE_URL = reverse("profile:profile-list")
 
 
 @pytest.mark.django_db

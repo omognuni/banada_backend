@@ -1,4 +1,4 @@
-from account.serializers.profile import (
+from profile.serializers.profile import (
     ProfileAnswerPatchSerializer,
     ProfileAnswerPostSerializer,
     ProfileAnswerSerializer,
@@ -8,7 +8,8 @@ from account.serializers.profile import (
     ProfilePostSerializer,
     ProfileValidationSerializer,
 )
-from account.services.profile import ProfileService
+from profile.services.profile import ProfileService
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
 from rest_framework.decorators import action

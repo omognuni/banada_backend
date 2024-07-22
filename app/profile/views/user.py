@@ -1,4 +1,5 @@
-from account.serializers.user import UserListSerializer
+from profile.serializers.user import UserListSerializer
+
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets

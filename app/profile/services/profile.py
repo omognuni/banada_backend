@@ -1,6 +1,6 @@
 import random
+from profile.models import Profile, ProfileAnswer, ProfileImage
 
-from account.models import Profile, ProfileAnswer, ProfileImage
 from contact.enums import MessageStatus
 from core.utils import exception
 

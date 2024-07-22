@@ -1,7 +1,7 @@
 import tempfile
+from profile.models import AnswerChoice, Profile, ProfileAnswer, Simulation
 
 import pytest
-from account.models import AnswerChoice, Profile, ProfileAnswer, Simulation
 from django.contrib.auth import get_user_model
 from PIL import Image
 from rest_framework.test import APIClient

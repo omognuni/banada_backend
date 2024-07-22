@@ -1,4 +1,5 @@
-from account.models import AnswerChoice, Simulation
+from profile.models import AnswerChoice, Simulation
+
 from rest_framework import serializers
 
 

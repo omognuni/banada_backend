@@ -1,10 +1,11 @@
-from account.views.profile import ProfileViewSet
-from account.views.simulation import SimulationViewSet
-from account.views.user import UserViewSet
+from profile.views.profile import ProfileViewSet
+from profile.views.simulation import SimulationViewSet
+from profile.views.user import UserViewSet
+
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
 
-app_name = "account"
+app_name = "profile"
 
 router = SimpleRouter()
 router.register("profiles", ProfileViewSet, "profile")

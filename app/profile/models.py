@@ -1,7 +1,7 @@
 import os
 import uuid
+from profile.enums import CategoryChoices, GenderChoices
 
-from account.enums import CategoryChoices, GenderChoices
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
 from django.contrib.auth import get_user_model

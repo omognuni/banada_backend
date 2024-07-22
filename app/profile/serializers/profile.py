@@ -1,4 +1,5 @@
-from account.models import Profile, ProfileAnswer, ProfileImage
+from profile.models import Profile, ProfileAnswer, ProfileImage
+
 from rest_framework import serializers
 
 
