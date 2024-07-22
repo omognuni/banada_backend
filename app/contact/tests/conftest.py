@@ -1,5 +1,6 @@
+from profile.models import Profile
+
 import pytest
-from account.models import Profile
 from contact.models import Contact
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient

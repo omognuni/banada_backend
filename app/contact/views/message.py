@@ -1,4 +1,5 @@
-from account.serializers.profile import ProfileListSerializer
+from profile.serializers.profile import ProfileListSerializer
+
 from contact.serializers.message import (
     MessagePatchSerializer,
     MessagePostSerializer,

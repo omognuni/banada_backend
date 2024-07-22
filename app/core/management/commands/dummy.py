@@ -1,12 +1,13 @@
-import django
-from account.enums import CategoryChoices, GenderChoices
-from account.models import (
+from profile.enums import CategoryChoices, GenderChoices
+from profile.models import (
     AnswerChoice,
     Profile,
     ProfileAnswer,
     ProfileImage,
     Simulation,
 )
+
+import django
 from contact.enums import MessageStatus, MessageTypeChoices, SNSService
 from contact.models import Contact, Message, MessageType, SNSInfo
 from django.contrib.auth import get_user_model

@@ -1,4 +1,5 @@
-from account.models import Profile, ProfileImage
+from profile.models import Profile, ProfileImage
+
 from contact.enums import MessageTypeChoices
 from contact.models import Contact, Message, MessageType, SNSInfo
 from rest_framework import serializers

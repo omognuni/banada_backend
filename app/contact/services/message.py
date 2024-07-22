@@ -1,4 +1,5 @@
-from account.models import Profile
+from profile.models import Profile
+
 from contact.enums import MessageStatus
 from contact.models import Message
 from django.db.models import Q
