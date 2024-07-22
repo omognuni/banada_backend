@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # APP
     "core",
-    "account",
+    "profile",
     "user",
     "contact",
 ]
@@ -47,6 +47,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "config.middleware.JsonContentTypeMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
