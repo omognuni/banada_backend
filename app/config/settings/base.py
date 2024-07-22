@@ -21,13 +21,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django.contrib.sites',
+    "django.contrib.sites",
     # OAuth2
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.kakao',
-    'allauth.socialaccount.providers.instagram',
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.kakao",
+    "allauth.socialaccount.providers.instagram",
     # DRF
     "rest_framework",
     "drf_spectacular",
@@ -121,28 +121,26 @@ REST_FRAMEWORK = {
 # OAuth2
 SITE_ID = 1
 
-AUTHENTICATION_BACKENDS = (
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
+AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
 
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 SOCIALACCOUNT_PROVIDERS = {
-    'kakao': {
-        'APP': {
-            'client_id': os.environ.get("KAKAO_CLINET_ID", ""),
-            'secret': os.environ.get("KAKAO_SECRET", ""),
-            'key': os.environ.get("KAKAO_KEY", ""),
+    "kakao": {
+        "APP": {
+            "client_id": os.environ.get("KAKAO_CLIENT_ID", ""),
+            "secret": os.environ.get("KAKAO_SECRET", ""),
+            "key": os.environ.get("KAKAO_KEY", ""),
         }
     },
-    'instagram': {
-        'APP': {
-            'client_id': os.environ.get("INSTAGRAM_CLINET_ID", ""),
-            'secret': os.environ.get("INSTAGRAM_SECRET", ""),
-            'key': os.environ.get("INSTAGRAM_KEY", ""),
+    "instagram": {
+        "APP": {
+            "client_id": os.environ.get("INSTAGRAM_CLIENT_ID", ""),
+            "secret": os.environ.get("INSTAGRAM_SECRET", ""),
+            "key": os.environ.get("INSTAGRAM_KEY", ""),
         }
-    }
+    },
 }
 
 SPECTACULAR_SETTINGS = {
