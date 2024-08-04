@@ -125,7 +125,7 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
 
 LOGIN_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_REDIRECT_URL = "/api/v1/accounts/login/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 SOCIALACCOUNT_PROVIDERS = {
     "kakao": {
