@@ -15,4 +15,4 @@ DATABASES = {
     }
 }
 
-CSRF_TRUSTED_ORIGINS = [os.environ.get("SERVER_HOST")]
+CSRF_TRUSTED_ORIGINS = [f"http://{os.environ.get('SERVER_HOST')}"]
