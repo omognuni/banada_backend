@@ -14,3 +14,5 @@ DATABASES = {
         "PORT": os.environ.get("DB_PORT"),
     }
 }
+
+CSRF_TRUSTED_ORIGINS = [os.environ.get("SERVER_HOST")]
