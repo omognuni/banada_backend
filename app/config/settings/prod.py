@@ -16,6 +16,6 @@ DATABASES = {
 }
 
 SERVER_HOST = os.environ.get("SERVER_HOST")
-LISTEN_PORT = os.environget("LISTEN_PORT")
+LISTEN_PORT = os.environ.get("LISTEN_PORT")
 
 CSRF_TRUSTED_ORIGINS = [f"http://{SERVER_HOST}:{LISTEN_PORT}"]
