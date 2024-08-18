@@ -91,19 +91,21 @@ class ProfileService:
     def validate(self, validated_data):
         profile_id = validated_data.get("profile_id")
         nickname = validated_data.get("nickname")
-
+        msg = "확인되었습니다."
         if profile_id:
             try:
                 profile = Profile.objects.get(id=profile_id)
             except:
-                raise exception.DoesNotExists
+                msg = "존재하지 않는 프로필입니다."
+                return msg
         else:
             profile = self._my_profile()
 
         if nickname and Profile.objects.filter(nickname=nickname).exists():
-            raise exception.AlreadyExists
+            msg = "이미 존재하는 닉네임입니다."
         elif profile.phone is None:
-            raise exception.PhoneNotExists
+            msg = "핸드폰 번호가 존재하지 않습니다"
+        return msg
 
     def match_answer(self, profile_id):
         my_answers = ProfileAnswer.objects.filter(profile=self._my_profile())

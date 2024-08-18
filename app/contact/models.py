@@ -40,7 +40,7 @@ class Message(SoftDeletedModel, TimeStampModel):
 
     @property
     def contacts(self):
-        return self.sender.contacts.all()
+        return self.receiver.contacts.all()
 
     @property
     def is_match(self):

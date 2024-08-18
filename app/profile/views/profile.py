@@ -197,5 +197,5 @@ class ProfileViewSet(viewsets.GenericViewSet):
         filter_serializer.is_valid(raise_exception=True)
 
         service = ProfileService(user=request.user)
-        service.validate(filter_serializer.validated_data)
-        return Response(status=status.HTTP_200_Ok)
+        msg = service.validate(filter_serializer.validated_data)
+        return Response(data={"message": msg}, status=status.HTTP_200_Ok)
