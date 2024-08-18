@@ -10,3 +10,8 @@ from rest_framework.response import Response
 class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(profile__user=self.request.user)
+        return queryset
