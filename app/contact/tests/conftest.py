@@ -15,7 +15,7 @@ def sender(nickname="sender"):
     profile_data = {"user": user, "nickname": nickname}
 
     profile = Profile.objects.create(**profile_data)
-    Contact.objects.create(profile=profile, phone_number="010-0000-1234")
+    Contact.objects.create(profile=profile, phone="010-0000-1234")
     return profile
 
 
@@ -28,7 +28,7 @@ def receiver(nickname="receiver"):
     profile_data = {"user": user, "nickname": nickname}
 
     profile = Profile.objects.create(**profile_data)
-    Contact.objects.create(profile=profile, phone_number="010-1000-1234")
+    Contact.objects.create(profile=profile, phone="010-1000-1234")
     return profile
 
 
