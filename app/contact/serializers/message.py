@@ -21,7 +21,10 @@ class ContactSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         snsinfos_data = validated_data.pop("snsinfos")
-        contact = Contact.objects.create(**validated_data)
+        user = self.context["request"].user
+        profile = Profile.objects.get(user=user)
+
+        contact = Contact.objects.create(**validated_data, profile=profile)
         for snsinfo_data in snsinfos_data:
             SNSInfo.objects.create(contact=contact, **snsinfo_data)
         return contact
