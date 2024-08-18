@@ -13,11 +13,29 @@ class SNSInfoSerializer(serializers.ModelSerializer):
 
 
 class ContactSerializer(serializers.ModelSerializer):
-    snsinfos = SNSInfoSerializer(read_only=True, many=True)
+    snsinfos = SNSInfoSerializer(many=True)
 
     class Meta:
         model = Contact
-        fields = ("id", "phone_number", "snsinfos")
+        fields = ("id", "phone", "snsinfos")
+
+    def create(self, validated_data):
+        snsinfos_data = validated_data.pop("snsinfos")
+        contact = Contact.objects.create(**validated_data)
+        for snsinfo_data in snsinfos_data:
+            SNSInfo.objects.create(contact=contact, **snsinfo_data)
+        return contact
+
+    def update(self, instance, validated_data):
+        snsinfos_data = validated_data.pop("snsinfos")
+        instance.phone = validated_data.get("phone", instance.phone)
+        instance.save()
+
+        instance.snsinfos.all().delete()
+        for snsinfo_data in snsinfos_data:
+            SNSInfo.objects.create(contact=instance, **snsinfo_data)
+
+        return instance
 
 
 class MessageTypeSerializer(serializers.ModelSerializer):

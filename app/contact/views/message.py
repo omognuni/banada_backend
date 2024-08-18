@@ -6,7 +6,7 @@ from contact.serializers.message import (
     MessageSerializer,
 )
 from contact.services.message import MessageService
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
