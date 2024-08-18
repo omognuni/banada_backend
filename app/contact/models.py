@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from contact.enums import MessageStatus, MessageTypeChoices, SNSService
 from core.models import SoftDeletedModel, TimeStampModel
+from django.core.validators import RegexValidator
 from django.db import models
 
 
@@ -9,7 +10,16 @@ class Contact(SoftDeletedModel, TimeStampModel):
     profile = models.ForeignKey(
         "profile.Profile", related_name="contacts", on_delete=models.CASCADE
     )
-    phone_number = models.CharField(max_length=200, blank=True)
+    phone = models.CharField(
+        max_length=15,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r"^(\+82|0)?1[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
+                message="유효한 전화번호 형식이 아닙니다: 010-1234-5678 혹은 +82-10-1234-5678",
+            )
+        ],
+    )
 
 
 class SNSInfo(SoftDeletedModel, TimeStampModel):

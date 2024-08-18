@@ -21,16 +21,6 @@ class Profile(SoftDeletedModel, TimeStampModel):
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
     nickname = models.CharField(max_length=200, null=True, unique=True)
-    phone = models.CharField(
-        max_length=15,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex=r"^(\+82|0)?1[0-9]{1}-?[0-9]{3,4}-?[0-9]{4}$",
-                message="유효한 전화번호 형식이 아닙니다: 010-1234-5678 혹은 +82-10-1234-5678",
-            )
-        ],
-    )
     gender = models.CharField(
         max_length=200, choices=GenderChoices.choices(), blank=True
     )
