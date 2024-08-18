@@ -65,7 +65,6 @@ class ProfilePostSerializer(serializers.ModelSerializer):
             "job",
             "residence",
             "religion",
-            "phone",
             "is_smoke",
             "drinking_frequency",
             "images",
