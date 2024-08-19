@@ -52,6 +52,8 @@ MIDDLEWARE = [
     "config.middleware.JsonContentTypeMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'rest_framework.authentication.TokenAuthentication', 
+    'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -121,6 +123,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    )
 }
 
 # OAuth2
@@ -128,10 +133,15 @@ SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
 
-REST_USE_JWT = True
-
 SITE_ID = 1
-REST_USE_JWT = True
+
+REST_AUTH = {
+    'USE_JWT' : True,
+    'JWT_AUTH_HTTPONLY': True,
+    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token",
+    'JWT_AUTH_COOKIE_USE_CSRF' : True,
+    'SESSION_LOGIN' : False
+}
 # ACCOUNT_EMAIL_REQUIRED = True  # email 필드 사용 o
 # ACCOUNT_AUTHENTICATION_METHOD = "email"
 # ACCOUNT_EMAIL_VERIFICATION = "none"
