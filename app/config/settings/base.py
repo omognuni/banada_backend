@@ -51,9 +51,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "config.middleware.JsonContentTypeMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
-    'rest_framework.authentication.TokenAuthentication', 
-    'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    "allauth.account.middleware.AccountMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
