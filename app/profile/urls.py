@@ -1,3 +1,4 @@
+from profile.views.image import ImageViewSet
 from profile.views.profile import ProfileViewSet
 from profile.views.simulation import SimulationViewSet
 from profile.views.user import UserViewSet
@@ -9,6 +10,7 @@ app_name = "profile"
 
 router = SimpleRouter()
 router.register("profiles", ProfileViewSet, "profile")
+router.register("images", ProfileViewSet, "image")
 router.register("simulations", SimulationViewSet, "simulation")
 router.register("users", UserViewSet, "user")
 
