@@ -17,8 +17,15 @@ class ProfileImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileImage
-        fields = ("id", "image")
+        fields = ("id", "image", "is_main")
         read_only_fields = ("id",)
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        profile = Profile.objects.get(user=user)
+
+        image = ProfileImage.objects.create(**validated_data, profile=profile)
+        return image
 
 
 class ProfileListSerializer(serializers.ModelSerializer):
