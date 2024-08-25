@@ -184,18 +184,22 @@ class ProfileViewSet(viewsets.GenericViewSet):
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
     @action(methods=["GET"], detail=False)
-    def validation(self, request):
+    def nickname_validation(self, request):
         """
-        핸드폰 등록 체크 / 닉네임 중복 체크
-
-        profile_id를 보내지 않으면 현재 로그인한 유저의 프로필을 기준으로
-        porfile_id를 보내면 해당 프로필을 기준으로
-        query parameter에 아무것도 안보내면 핸드폰 등록 여부
-        nickname과 함께 보내면 nickname 중복 여부 체크
+        닉네임 중복 체크
         """
         filter_serializer = ProfileValidationSerializer(data=request.query_params)
         filter_serializer.is_valid(raise_exception=True)
 
         service = ProfileService(user=request.user)
         msg = service.validate(filter_serializer.validated_data)
+        return Response(data={"message": msg}, status=status.HTTP_200_Ok)
+
+    @action(methods=["GET"], detail=True)
+    def phone_validation(self, request, pk):
+        """
+        핸드폰 등록 체크
+        """
+        service = ProfileService(user=request.user)
+        msg = service.validate({"profile_id": pk})
         return Response(data={"message": msg}, status=status.HTTP_200_Ok)
