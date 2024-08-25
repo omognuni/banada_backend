@@ -10,7 +10,7 @@ app_name = "profile"
 
 router = SimpleRouter()
 router.register("profiles", ProfileViewSet, "profile")
-router.register("images", ProfileViewSet, "image")
+router.register("images", ImageViewSet, "image")
 router.register("simulations", SimulationViewSet, "simulation")
 router.register("users", UserViewSet, "user")
 
