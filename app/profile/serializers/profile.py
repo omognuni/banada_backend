@@ -23,9 +23,19 @@ class ProfileImageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context["request"].user
         profile = Profile.objects.get(user=user)
+        image = validated_data.pop("image")
 
-        image = ProfileImage.objects.create(**validated_data, profile=profile)
+        image = ProfileImage.objects.create(
+            **validated_data, profile=profile, image=image
+        )
         return image
+
+    def update(self, instance, validated_data):
+        image = validated_data.pop("image", None)
+        if image:
+            instance.image = image
+        instance.save()
+        return instance
 
 
 class ProfileListSerializer(serializers.ModelSerializer):

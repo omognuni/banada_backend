@@ -2,6 +2,7 @@ from profile.models import ProfileImage
 from profile.serializers.profile import ProfileImageSerializer
 
 from drf_spectacular.utils import extend_schema
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.viewsets import ModelViewSet
 
 
@@ -9,6 +10,7 @@ from rest_framework.viewsets import ModelViewSet
 class ImageViewSet(ModelViewSet):
     queryset = ProfileImage.objects.all()
     serializer_class = ProfileImageSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
         queryset = super().get_queryset()
