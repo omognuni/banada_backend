@@ -33,12 +33,13 @@ class MessageService:
         # 내가 메시지를 보냈을때 거절(만료) 당한 경우
         # 상대가 메세지를 보냈는데 만료된 경우
         # 단방향 호감 표시한 경우
-        profiles = (
+        profile_ids = (
             Message.objects.filter(Q(sender=self._user) | Q(receiver=self._user))
             .filter(Q(status=MessageStatus.EXPIRED) | Q(status=MessageStatus.REFUSED))
-            .values("receiver")
+            .values_list("receiver", flat=True)
             .distinct()
         )
+        profiles = Profile.objects.filter(id__in=profile_ids)
         # messages = self.fetch_sent_messages()
         # profiles = (
         #     messages.filter(
