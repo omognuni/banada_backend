@@ -36,7 +36,7 @@ class Command(BaseCommand):
             user=user,
             nickname=fake.first_name(),
             gender=fake.random_element(
-                elements=[choice[0] for choice in GenderChoices.choices()]
+                elements=[choice for choice in GenderChoices.choices()]
             ),
             age=fake.random_int(min=18, max=99),
             height=fake.random_int(min=150, max=200),
@@ -61,7 +61,7 @@ class Command(BaseCommand):
     def create_simulation_and_answers(self):
         simulation = Simulation.objects.create(
             category=fake.random_element(
-                elements=[choice[0] for choice in CategoryChoices.choices()]
+                elements=[choice for choice in CategoryChoices.choices()]
             ),
             question=fake.sentence(),
         )
@@ -86,7 +86,7 @@ class Command(BaseCommand):
         sns_info = SNSInfo.objects.create(
             contact=contact,
             service=fake.random_element(
-                elements=[choice[0] for choice in SNSService.choices()]
+                elements=[choice for choice in SNSService.choices()]
             ),
             username=fake.user_name(),
         )
@@ -96,7 +96,7 @@ class Command(BaseCommand):
     def create_message_type(self):
         message_type = MessageType.objects.create(
             name=fake.random_element(
-                elements=[choice[0] for choice in MessageTypeChoices.choices()]
+                elements=[choice for choice in MessageTypeChoices.choices()]
             ),
             cost=fake.random_int(min=1, max=10),
         )
@@ -117,16 +117,21 @@ class Command(BaseCommand):
 
     def create_dummy_data(self):
         for _ in range(10):
-            user = self.create_user()
-            profile = self.create_profile(user)
-            self.create_profile_image(profile)
+            try:
+                user = self.create_user()
+                profile = self.create_profile(user)
+                self.create_profile_image(profile)
 
-            simulation = self.create_simulation_and_answers()
-            answer_choice = AnswerChoice.objects.filter(simulation=simulation).first()
-            self.create_profile_answer(profile, simulation, answer_choice)
+                simulation = self.create_simulation_and_answers()
+                answer_choice = AnswerChoice.objects.filter(
+                    simulation=simulation
+                ).first()
+                self.create_profile_answer(profile, simulation, answer_choice)
 
-            contact, sns_info = self.create_contact_and_sns(profile)
-            message_type = self.create_message_type()
+                contact, sns_info = self.create_contact_and_sns(profile)
+                message_type = self.create_message_type()
 
-            receiver_profile = Profile.objects.order_by("?").first()
-            self.create_message(profile, receiver_profile, message_type)
+                receiver_profile = Profile.objects.order_by("?").first()
+                self.create_message(profile, receiver_profile, message_type)
+            except:
+                pass
