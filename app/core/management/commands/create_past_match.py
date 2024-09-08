@@ -35,7 +35,7 @@ class Command(BaseCommand):
         users = get_user_model().objects.all()
 
         for user in users:
-            profile = Profile.objects.get(user=user)
+            profile = Profile.objects.filter(user=user).first()
 
             for _ in range(100):
                 receiver = Profile.objects.order_by("?").first()
