@@ -110,7 +110,7 @@ class Command(BaseCommand):
             message_type=message_type,
             content=fake.text(),
             status=fake.random_element(
-                elements=[choice[0] for choice in MessageStatus.choices()]
+                elements=[choice for choice in MessageStatus.choices()]
             ),
         )
         return message
