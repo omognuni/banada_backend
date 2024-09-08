@@ -19,11 +19,11 @@ fake = Faker()
 
 
 class Command(BaseCommand):
-    def create_message(self, sender, receiver, message_type):
+    def create_message(self, sender, receiver):
         message = Message.objects.create(
             sender=sender,
             receiver=receiver,
-            message_type=message_type,
+            message_type=MessageType.objects.order_by("?").first(),
             content=fake.text(),
             status=fake.random_element(
                 elements=[MessageStatus.EXPIRED, MessageStatus.REFUSED]
