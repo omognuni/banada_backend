@@ -183,7 +183,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
         output_serializer = ProfileAnswerValueSerializer(match_result, many=True)
         return Response(status=status.HTTP_200_OK, data=output_serializer.data)
 
-    @action(methods=["GET"], detail=False)
+    @action(methods=["GET"], detail=False, url_path="nickname-validation")
     def nickname_validation(self, request):
         """
         닉네임 중복 체크
@@ -195,7 +195,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
         msg = service.validate(filter_serializer.validated_data)
         return Response(data={"message": msg}, status=status.HTTP_200_Ok)
 
-    @action(methods=["GET"], detail=True)
+    @action(methods=["GET"], detail=True, url_path="phone-validation")
     def phone_validation(self, request, pk):
         """
         핸드폰 등록 체크
