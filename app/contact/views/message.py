@@ -84,5 +84,5 @@ class MessageViewSet(viewsets.GenericViewSet):
         service = MessageService(request.user)
         profiles = service.past_match()
 
-        # output_serializer = ProfileListSerializer(profiles, many=True)
-        return Response(data=profiles, status=status.HTTP_200_OK)
+        output_serializer = ProfileListSerializer(profiles, many=True)
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
