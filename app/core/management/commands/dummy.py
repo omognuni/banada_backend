@@ -130,8 +130,8 @@ class Command(BaseCommand):
 
                 contact, sns_info = self.create_contact_and_sns(profile)
                 message_type = self.create_message_type()
-
-                receiver_profile = Profile.objects.order_by("?").first()
-                self.create_message(profile, receiver_profile, message_type)
+                for _ in range(100):
+                    receiver_profile = Profile.objects.order_by("?").first()
+                    self.create_message(profile, receiver_profile, message_type)
             except:
                 pass
