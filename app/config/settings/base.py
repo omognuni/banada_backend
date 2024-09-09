@@ -148,6 +148,7 @@ REST_AUTH = {
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 SOCIALACCOUNT_PROVIDERS = {
     "kakao": {
@@ -162,8 +163,6 @@ SOCIALACCOUNT_PROVIDERS = {
             "client_id": os.environ.get("INSTAGRAM_CLIENT_ID", ""),
             "secret": os.environ.get("INSTAGRAM_SECRET", ""),
             "key": os.environ.get("INSTAGRAM_KEY", ""),
-            "redirect_uri": os.environ.get("DNS")
-            + "/accounts/instagram/login/callback/",
         },
         "SCOPE": ["user_profile"],
     },
