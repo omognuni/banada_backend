@@ -162,6 +162,8 @@ SOCIALACCOUNT_PROVIDERS = {
             "client_id": os.environ.get("INSTAGRAM_CLIENT_ID", ""),
             "secret": os.environ.get("INSTAGRAM_SECRET", ""),
             "key": os.environ.get("INSTAGRAM_KEY", ""),
+            "redirect_uri": os.environ.get("DNS")
+            + "/accounts/instagram/login/callback/",
         },
         "SCOPE": ["user_profile"],
     },
