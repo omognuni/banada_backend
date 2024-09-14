@@ -63,10 +63,31 @@ class MessageProfileSerializer(serializers.ModelSerializer):
         fields = ("id", "nickname", "age", "images")
 
 
-class MessageSerializer(serializers.ModelSerializer):
+class ReceivedMessageSerializer(serializers.ModelSerializer):
     sender_name = serializers.CharField(source="sender.nickname", read_only=True)
     receiver_name = serializers.CharField(source="receiver.nickname", read_only=True)
-    contacts = ContactSerializer(read_only=True, many=True)
+    contacts = ContactSerializer(source="receiver.contacts", read_only=True, many=True)
+    message_type = MessageTypeSerializer(read_only=True)
+    is_match = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Message
+        fields = (
+            "id",
+            "sender_name",
+            "receiver_name",
+            "contacts",
+            "content",
+            "status",
+            "message_type",
+            "is_match",
+        )
+
+
+class SentMessageSerializer(serializers.ModelSerializer):
+    sender_name = serializers.CharField(source="sender.nickname", read_only=True)
+    receiver_name = serializers.CharField(source="receiver.nickname", read_only=True)
+    contacts = ContactSerializer(source="sender.contacts", read_only=True, many=True)
     message_type = MessageTypeSerializer(read_only=True)
     is_match = serializers.BooleanField(read_only=True)
 

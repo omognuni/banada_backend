@@ -3,7 +3,8 @@ from profile.serializers.profile import ProfileListSerializer
 from contact.serializers.message import (
     MessagePatchSerializer,
     MessagePostSerializer,
-    MessageSerializer,
+    ReceivedMessageSerializer,
+    SentMessageSerializer,
 )
 from contact.services.message import MessageService
 from drf_spectacular.utils import extend_schema
@@ -14,8 +15,9 @@ from rest_framework.response import Response
 
 @extend_schema(tags=["message"])
 class MessageViewSet(viewsets.GenericViewSet):
-    serializer_class = MessageSerializer
+    # serializer_class = MessageSerializer
 
+    @extend_schema(responses=ReceivedMessageSerializer)
     @action(methods=["GET"], detail=False)
     def received(self, request):
         """
@@ -30,6 +32,7 @@ class MessageViewSet(viewsets.GenericViewSet):
 
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(responses=SentMessageSerializer)
     @action(methods=["GET"], detail=False)
     def sent(self, request):
         """

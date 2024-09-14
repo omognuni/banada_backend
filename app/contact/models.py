@@ -49,10 +49,6 @@ class Message(SoftDeletedModel, TimeStampModel):
     )
 
     @property
-    def contacts(self):
-        return self.receiver.contacts.all()
-
-    @property
     def is_match(self):
         if Message.objects.filter(
             receiver=self.sender,
