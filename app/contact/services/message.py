@@ -17,15 +17,19 @@ class MessageService:
         return messages
 
     def fetch_received_messages(self):
-        messages = Message.objects.select_related("sender", "message_type").filter(
-            receiver=self._user
+        messages = (
+            Message.objects.select_related("sender", "message_type")
+            .prefetch_related("contacts")
+            .filter(receiver=self._user)
         )
 
         return messages
 
     def fetch_sent_messages(self):
-        messages = Message.objects.select_related("receiver", "message_type").filter(
-            sender=self._user
+        messages = (
+            Message.objects.select_related("receiver", "message_type")
+            .prefetch_related("contacts")
+            .filter(sender=self._user)
         )
 
         return messages
