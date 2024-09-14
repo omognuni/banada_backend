@@ -28,7 +28,7 @@ class MessageViewSet(viewsets.GenericViewSet):
 
         service = MessageService(request.user)
         messages = service.fetch_received_messages()
-        output_serializer = self.get_serializer(messages, many=True)
+        output_serializer = ReceivedMessageSerializer(messages, many=True)
 
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
@@ -41,7 +41,7 @@ class MessageViewSet(viewsets.GenericViewSet):
         """
         service = MessageService(request.user)
         messages = service.fetch_sent_messages()
-        output_serializer = self.get_serializer(messages, many=True)
+        output_serializer = SentMessageSerializer(messages, many=True)
 
         return Response(output_serializer.data, status=status.HTTP_200_OK)
 
