@@ -10,13 +10,23 @@ class MessageService:
     def __init__(self, user):
         self._user = Profile.objects.get(user=user)
 
+    def _messages(self):
+        messages = Message.objects.select_related(
+            "sender", "receiver", "message_type"
+        ).all()
+        return messages
+
     def fetch_received_messages(self):
-        messages = Message.objects.filter(receiver=self._user)
+        messages = Message.objects.select_related("sender", "message_type").filter(
+            receiver=self._user
+        )
 
         return messages
 
     def fetch_sent_messages(self):
-        messages = Message.objects.filter(sender=self._user)
+        messages = Message.objects.select_related("receiver", "message_type").filter(
+            sender=self._user
+        )
 
         return messages
 
