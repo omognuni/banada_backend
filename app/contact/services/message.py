@@ -19,7 +19,7 @@ class MessageService:
     def fetch_received_messages(self):
         messages = (
             Message.objects.select_related("sender", "message_type")
-            .prefetch_related("contacts")
+            .prefetch_related("sender__contacts", "receiver__contacts")
             .filter(receiver=self._user)
         )
 
@@ -28,7 +28,7 @@ class MessageService:
     def fetch_sent_messages(self):
         messages = (
             Message.objects.select_related("receiver", "message_type")
-            .prefetch_related("contacts")
+            .prefetch_related("sender__contacts", "receiver__contacts")
             .filter(sender=self._user)
         )
 
