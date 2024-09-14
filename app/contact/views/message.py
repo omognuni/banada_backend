@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 @extend_schema(tags=["message"])
 class MessageViewSet(viewsets.GenericViewSet):
-    # serializer_class = MessageSerializer
+    serializer_class = ReceivedMessageSerializer
 
     @extend_schema(responses=ReceivedMessageSerializer)
     @action(methods=["GET"], detail=False)
