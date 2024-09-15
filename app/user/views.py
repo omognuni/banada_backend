@@ -22,16 +22,17 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
         access_token = str(refresh.access_token)
         refresh_token = str(refresh)
 
-        # 쿠키에 access_token 설정
+        # 응답 객체 생성
+        response = Response(
+            {"access_token": access_token, "refresh_token": refresh_token}
+        )
         response.set_cookie(
             key="access_token",
             value=access_token,
-            httponly=True,  # JavaScript에서 접근 불가
-            secure=True,  # HTTPS에서만 전송 (개발 환경에 따라 조정)
-            samesite="Lax",  # CSRF 보호를 위한 SameSite 설정
+            httponly=True,
+            secure=True,
+            samesite="Lax",
         )
-
-        # 쿠키에 refresh_token 설정
         response.set_cookie(
             key="refresh_token",
             value=refresh_token,
@@ -41,11 +42,8 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
         )
 
         if social_account_exists:
-            # 사용자가 존재하는 경우, 홈 페이지로 리디렉션
-            return HttpResponseRedirect("/")
+            response["Location"] = "/"
+            response.status_code = 302
+            return response
         else:
-            # 사용자가 존재하지 않는 경우, 사용자 ID를 JSON으로 반환
-            return Response(
-                status=status.HTTP_200_OK,
-                data={"user": user.id, "username": user.username},
-            )
+            return Response({"user_id": user.id})
