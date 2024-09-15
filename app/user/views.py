@@ -27,7 +27,7 @@ KAKAO_CALLBACK_URI = "https://banada.duckdns.org/auth/login"  # 프론트 로그
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def kakao_callback(request):
-    rest_api_key = os.environ.get("KAKAO_SECRET")
+    secret_key = os.environ.get("KAKAO_SECRET")
     client_id = os.environ.get("KAKAO_CLIENT_ID")
     code = request.GET.get("code")
     redirect_uri = KAKAO_CALLBACK_URI
@@ -36,9 +36,15 @@ def kakao_callback(request):
     Access Token Request
     """
     headers = {"Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
+    params = {
+        "grant_type": "authorization_code",
+        "client_secret": secret_key,
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "code": code,
+    }
     token_req = requests.get(
-        f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_secret={rest_api_key}&client_id={client_id}&redirect_uri={redirect_uri}&code={code}",
-        headers=headers,
+        f"https://kauth.kakao.com/oauth/token", params=params, headers=headers
     )
     token_req_json = token_req.json()
     error = token_req_json.get("error")
