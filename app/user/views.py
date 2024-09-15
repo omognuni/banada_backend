@@ -13,7 +13,7 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
             # 로그인 정보 처리
             login = super().complete_login(request, app, token, **kwargs)
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return HttpResponse(f"Error: {str(e)}", status=500)
 
         user = login.user
 
@@ -21,22 +21,41 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
         if not user.pk:
             user.save()
 
-        # 사용자를 Django의 세션에 로그인 시킵니다.
-        auth_login(request, user)
+        # 해당 소셜 계정이 이미 있는지 확인
+        social_account_exists = SocialAccount.objects.filter(
+            provider="kakao", user=user
+        ).exists()
 
-        # 이제 dj-rest-auth의 로그인 엔드포인트를 호출합니다.
-        # 자동으로 JWT 토큰을 발급하고 이를 쿠키에 저장하도록 처리할 수 있습니다.
+        # JWT 토큰 발급
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
 
-        # 이 예제에서는 JWT 토큰을 발급한 후 /dashboard로 리디렉션합니다.
-        # 필요한 경우 이 부분을 수정하여 다른 페이지로 리디렉션하거나 JSON 응답을 반환할 수 있습니다.
+        # 응답 객체 생성
+        response = HttpResponse(status=200)
 
-        # 리다이렉트 URL 설정 (로그인 후 리다이렉트할 경로)
-        redirect_url = reverse("dashboard")  # 예: 사용자가 로그인 후 대시보드로 이동
+        # 쿠키에 access_token 설정
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=True,
+            samesite="Lax",
+        )
 
-        # Optional: 추가적인 URL 파라미터 설정 (필요할 경우)
-        query_string = urlencode({"next": redirect_url})
+        # 쿠키에 refresh_token 설정
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=True,
+            samesite="Lax",
+        )
 
-        # 실제 리다이렉션을 수행할 URL
-        url = f"{reverse('rest_login')}?{query_string}"
-
-        return HttpResponseRedirect(url)
+        if social_account_exists:
+            response["Location"] = "/"
+            response.status_code = 302
+            return response
+        else:
+            # 사용자 ID를 JSON 형태로 반환
+            return HttpResponse(f"User ID: {user.id}", status=200)
