@@ -60,13 +60,8 @@ def kakao_callback(request):
         },
     )
     profile_json = profile_request.json()
-    kakao_profile = profile_json.get("profile")
-
-    """
-    kakao_account에서 이메일 외에
-    카카오톡 프로필 이미지, 배경 이미지 url 가져올 수 있음
-    print(kakao_account) 참고
-    """
+    kakao_account = profile_json.get("kakao_account")
+    kakao_profile = kakao_account.get("profile")
     nickname = kakao_profile.get("nickname")
 
     """
