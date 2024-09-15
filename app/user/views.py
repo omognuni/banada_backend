@@ -10,6 +10,10 @@ from rest_framework.views import APIView
 
 class KakaoLogin(SocialLoginView):
     adaptor_class = KakaoOAuth2Adapter
+    client_class = OAuth2Client
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 
 class SocialCallbackView(APIView):

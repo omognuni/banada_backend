@@ -7,5 +7,5 @@ urlpatterns = [
         SocialCallbackView.as_view(),
         name="kakao_callback",
     ),
-    path("kakao/login/", KakaoLogin.as_view(), name="kakao_login"),
+    path("kakao/", KakaoLogin.as_view(), name="kakao_login"),
 ]
