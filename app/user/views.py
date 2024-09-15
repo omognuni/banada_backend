@@ -17,7 +17,7 @@ class SocialCallbackView(APIView):
 
         if not access_token:
             return Response(
-                {"error": "Access token is required"},
+                {"error": "Access token is required", "msg": f"{request.query_params}"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
