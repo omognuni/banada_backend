@@ -1,4 +1,4 @@
 from django.urls import path
-from user.views import KakaoConnect
+from user.views import KakaoLogin
 
-urlpatterns = [path("kakao/connect/", KakaoConnect.as_view(), name="kakao_connect")]
+urlpatterns = [path("kakao/login/", KakaoLogin.as_view(), name="kakao_connect")]
