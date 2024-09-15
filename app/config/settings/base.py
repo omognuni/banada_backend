@@ -160,7 +160,8 @@ SOCIALACCOUNT_PROVIDERS = {
             "client_id": os.environ.get("KAKAO_CLIENT_ID", ""),
             "secret": os.environ.get("KAKAO_SECRET", ""),
             "key": os.environ.get("KAKAO_KEY", ""),
-        }
+        },
+        "REDIRECT_URI": "https://banada.duckdns.org/api/v1/kakao/login/callback/",
     },
     "instagram": {
         "APP": {

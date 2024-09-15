@@ -1,33 +1,51 @@
-from allauth.socialaccount.models import SocialToken
+from allauth.socialaccount.models import SocialAccount, SocialLogin
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from rest_framework.permissions import AllowAny
+from django.http import HttpResponseRedirect
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
-class KakaoLoginView(APIView):
-    permission_classes = (AllowAny,)
+class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
+    def complete_login(self, request, app, token, response):
+        # 로그인 정보 처리
+        login = super().complete_login(request, app, token, response)
+        user = login.user
 
-    def post(self, request):
-        access_token = request.data.get("access_token")
+        # 해당 소셜 계정이 이미 있는지 확인
+        social_account_exists = SocialAccount.objects.filter(
+            provider="kakao", user=user
+        ).exists()
 
-        if access_token:
-            # KakaoOAuth2Adapter를 사용하여 토큰 검증 및 사용자 정보 가져오기
-            adapter = KakaoOAuth2Adapter()
-            client = OAuth2Client(
-                request, client_id=adapter.get_provider().get_app(request).client_id
-            )
-            token = SocialToken(token=access_token)
+        # JWT 토큰 발급
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
 
-            # 사용자가 존재하는지 확인하고, 없으면 생성
-            login = adapter.complete_login(
-                request, app=adapter.get_provider().get_app(request), token=token
-            )
-            login.token = token
-            login.user.save()
+        # 쿠키에 access_token 설정
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,  # JavaScript에서 접근 불가
+            secure=True,  # HTTPS에서만 전송 (개발 환경에 따라 조정)
+            samesite="Lax",  # CSRF 보호를 위한 SameSite 설정
+        )
 
-            # 여기서 추가적으로 user 정보나 다른 응답 데이터를 구성할 수 있습니다.
-            return Response({"access_token": access_token, "user": login.user.id})
+        # 쿠키에 refresh_token 설정
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            httponly=True,
+            secure=True,
+            samesite="Lax",
+        )
+
+        if social_account_exists:
+            # 사용자가 존재하는 경우, 홈 페이지로 리디렉션
+            return HttpResponseRedirect("/")
         else:
-            return Response({"error": "Access token not provided"}, status=400)
+            # 사용자가 존재하지 않는 경우, 사용자 ID를 JSON으로 반환
+            return Response(
+                status=status.HTTP_200_OK,
+                data={"user": user.id, "username": user.username},
+            )
