@@ -173,6 +173,9 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+SOCIALACCOUNT_ADAPTER = "core.adapters.CustomSocialAccountAdapter"
+
+
 from datetime import timedelta
 
 SIMPLE_JWT = {
