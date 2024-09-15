@@ -48,10 +48,10 @@ def kakao_callback(request):
     )
     token_req_json = token_req.json()
     error = token_req_json.get("error")
-    if error is not None:
-        raise JSONDecodeError(
-            msg=f"params: {params}, response: {token_req} , error: {error}"
-        )
+    # if error is not None:
+    #     raise JSONDecodeError(
+    #         msg=f"params: {params}, response: {token_req} , error: {error}"
+    #     )
     access_token = token_req_json.get("access_token")
 
     """
@@ -66,8 +66,8 @@ def kakao_callback(request):
     )
     profile_json = profile_request.json()
     error = profile_json.get("error")
-    if error is not None:
-        raise JSONDecodeError(error)
+    # if error is not None:
+    #     raise JSONDecodeError(error)
     kakao_account = profile_json.get("kakao_account")
 
     """
