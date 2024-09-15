@@ -10,22 +10,5 @@ from rest_framework.views import APIView
 
 class KakaoLogin(SocialLoginView):
     adaptor_class = KakaoOAuth2Adapter
+    callback_url = reverse("kakao_callback")
     client_class = OAuth2Client
-
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
-class SocialCallbackView(APIView):
-    def get(self, request, *args, **kwargs):
-        # 클라이언트로부터 소셜 제공자의 액세스 토큰을 쿼리 매개변수로 받습니다.
-        code = request.query_params.get("code")
-        state = request.query_params.get("state")
-        access_token = request.COOKIES.get("refresh_token") or request.COOKIES.get(
-            "access"
-        )
-
-        url = reverse("kakao_login")
-        data = {"code": code, "state": state, "access_token": access_token}
-        response = requests.post(url, data=data)
-        return response
