@@ -60,20 +60,20 @@ def kakao_callback(request):
         },
     )
     profile_json = profile_request.json()
-    kakao_account = profile_json.get("kakao_account")
+    kakao_profile = profile_json.get("profile")
 
     """
     kakao_account에서 이메일 외에
     카카오톡 프로필 이미지, 배경 이미지 url 가져올 수 있음
     print(kakao_account) 참고
     """
-    email = kakao_account.get("email")
+    nickname = kakao_profile.get("nickname")
 
     """
     Signup or Signin Request
     """
     try:
-        user = get_user_model().objects.get(email=email)
+        user = get_user_model().objects.get(username=nickname)
         # 기존에 가입된 유저의 Provider가 kakao가 아니면 에러 발생, 맞으면 로그인
         # 다른 SNS로 가입된 유저
         social_user = SocialAccount.objects.get(user=user)
