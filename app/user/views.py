@@ -82,7 +82,7 @@ def kakao_callback(request):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         # 기존에 kakao로 가입된 유저
-        data = {"access_token": access_token, "code": code}
+        data = {"access": access_token, "code": code}
         accept = requests.post(f"{BASE_URL}api/v1/kakao/login/finish/", data=data)
         accept_status = accept.status_code
         if accept_status != 200:
@@ -107,7 +107,7 @@ def kakao_callback(request):
 
     except get_user_model().DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
-        data = {"access_token": access_token, "code": code}
+        data = {"access": access_token, "code": code}
         accept = requests.post(f"{BASE_URL}api/v1/kakao/login/finish/", data=data)
         accept_status = accept.status_code
         if accept_status != 200:
@@ -118,13 +118,13 @@ def kakao_callback(request):
         # refresh_token을 headers 문자열에서 추출함
         refresh_token = accept.headers["Set-Cookie"]
         refresh_token = refresh_token.replace("=", ";").replace(",", ";").split(";")
-        token_index = refresh_token.index(" refresh_token")
+        token_index = refresh_token.index(" refresh")
         refresh_token = refresh_token[token_index + 1]
 
         accept_json.pop("user", None)
         response_cookie = JsonResponse(accept_json)
         response_cookie.set_cookie(
-            "refresh_token",
+            "refresh",
             refresh_token,
             max_age=cookie_max_age,
             httponly=True,
