@@ -36,7 +36,7 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
 
         # 쿠키에 access_token 설정
         response.set_cookie(
-            key="access_token",
+            key="access",
             value=access_token,
             httponly=True,
             secure=True,
