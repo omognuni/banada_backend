@@ -35,9 +35,10 @@ def kakao_callback(request):
     """
     Access Token Request
     """
-
+    headers = {"Content-type": "application/x-www-form-urlencoded;charset=utf-8"}
     token_req = requests.get(
-        f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_secret={rest_api_key}&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
+        f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_secret={rest_api_key}&client_id={client_id}&redirect_uri={redirect_uri}&code={code}",
+        headers=headers,
     )
     token_req_json = token_req.json()
     error = token_req_json.get("error")
@@ -50,7 +51,10 @@ def kakao_callback(request):
     """
     profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
-        headers={"Authorization": f"Bearer {access_token}"},
+        headers={
+            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            "Authorization": f"Bearer {access_token}",
+        },
     )
     profile_json = profile_request.json()
     error = profile_json.get("error")
