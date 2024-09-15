@@ -118,7 +118,7 @@ def kakao_callback(request):
         # refresh_token을 headers 문자열에서 추출함
         refresh_token = accept.headers["Set-Cookie"]
         refresh_token = refresh_token.replace("=", ";").replace(",", ";").split(";")
-        token_index = refresh_token.index(" refresh")
+        token_index = refresh_token.index("refresh")
         refresh_token = refresh_token[token_index + 1]
 
         accept_json.pop("user", None)
