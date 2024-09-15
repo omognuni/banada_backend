@@ -1,20 +1,16 @@
-from allauth.socialaccount.models import SocialAccount, SocialLogin
+from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
-from django.http import HttpResponseRedirect
-from rest_framework import status
-from rest_framework.response import Response
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
     def complete_login(self, request, app, token, **kwargs):
-        # 로그인 정보 처리
-        # login = super().complete_login(request, app, token, **kwargs)
         try:
             # 로그인 정보 처리
             login = super().complete_login(request, app, token, **kwargs)
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            return JsonResponse({"error": str(e)}, status=500)
 
         user = login.user
 
@@ -33,9 +29,9 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
         refresh_token = str(refresh)
 
         # 응답 객체 생성
-        response = Response(
-            {"access_token": access_token, "refresh_token": refresh_token}
-        )
+        response = HttpResponse(status=200)
+
+        # 쿠키에 access_token 설정
         response.set_cookie(
             key="access_token",
             value=access_token,
@@ -43,6 +39,8 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
             secure=True,
             samesite="Lax",
         )
+
+        # 쿠키에 refresh_token 설정
         response.set_cookie(
             key="refresh_token",
             value=refresh_token,
@@ -56,4 +54,5 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
             response.status_code = 302
             return response
         else:
-            return Response({"user_id": user.id})
+            # 사용자 ID를 JSON 형태로 반환
+            return JsonResponse({"user_id": user.id})
