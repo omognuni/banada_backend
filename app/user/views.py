@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-class KakaoLogin(SocialLoginView):
-    adaptor_class = KakaoOAuth2Adapter
-    client_class = OAuth2Client
+class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
+    def complete_login(self, request, app, token, **kwargs):
+
+        return super().complete_login(request, app, token, **kwargs)
