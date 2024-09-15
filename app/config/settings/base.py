@@ -162,7 +162,7 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": os.environ.get("KAKAO_SECRET", ""),
             "key": os.environ.get("KAKAO_KEY", ""),
         },
-        "SCOPE": ["account_email"],
+        "SCOPE": ["profile_nickname"],
     },
     "instagram": {
         "APP": {
