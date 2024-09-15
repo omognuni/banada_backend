@@ -123,6 +123,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         # "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
@@ -161,7 +162,6 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": os.environ.get("KAKAO_SECRET", ""),
             "key": os.environ.get("KAKAO_KEY", ""),
         },
-        "REDIRECT_URI": "https://banada.duckdns.org/api/v1/kakao/login/callback/",
     },
     "instagram": {
         "APP": {
