@@ -1,7 +1,7 @@
+from allauth.socialaccount.helpers import complete_social_login
 from allauth.socialaccount.models import SocialAccount
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
-from django.contrib.auth import login as auth_login
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse
 from django.urls import reverse
 from django.utils.http import urlencode
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -25,6 +25,9 @@ class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
         social_account_exists = SocialAccount.objects.filter(
             provider="kakao", user=user
         ).exists()
+
+        # 소셜 로그인 완료 처리
+        complete_social_login(request, login)
 
         # JWT 토큰 발급
         refresh = RefreshToken.for_user(user)
