@@ -9,8 +9,18 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
     def complete_login(self, request, app, token, **kwargs):
         # 로그인 정보 처리
-        login = super().complete_login(request, app, token, **kwargs)
+        # login = super().complete_login(request, app, token, **kwargs)
+        try:
+            # 로그인 정보 처리
+            login = super().complete_login(request, app, token, **kwargs)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
         user = login.user
+
+        # 만약 사용자 인스턴스가 저장되지 않았다면, 먼저 저장합니다.
+        if not user.pk:
+            user.save()
 
         # 해당 소셜 계정이 이미 있는지 확인
         social_account_exists = SocialAccount.objects.filter(
