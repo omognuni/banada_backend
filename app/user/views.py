@@ -11,9 +11,9 @@ class KakaoLogin(SocialLoginView):
 
 
 class SocialCallbackView(APIView):
-    def post(self, request, *args, **kwargs):
-        # 클라이언트로부터 소셜 제공자의 액세스 토큰을 받습니다.
-        access_token = request.data.get("access_token")
+    def get(self, request, *args, **kwargs):
+        # 클라이언트로부터 소셜 제공자의 액세스 토큰을 쿼리 매개변수로 받습니다.
+        access_token = request.query_params.get("access_token")
 
         if not access_token:
             return Response(
@@ -21,7 +21,7 @@ class SocialCallbackView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # GoogleLogin 같은 SocialLoginView를 호출하여 사용자 로그인 및 JWT 발급
+        # KakaoLogin 같은 SocialLoginView를 호출하여 사용자 로그인 및 JWT 발급
         view = KakaoLogin.as_view()
         response = view(
             request._request
