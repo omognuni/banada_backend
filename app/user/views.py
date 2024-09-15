@@ -7,9 +7,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class CustomKakaoOAuth2Adapter(KakaoOAuth2Adapter):
-    def complete_login(self, request, app, token, response):
+    def complete_login(self, request, app, token, **kwargs):
         # 로그인 정보 처리
-        login = super().complete_login(request, app, token, response)
+        login = super().complete_login(request, app, token, **kwargs)
         user = login.user
 
         # 해당 소셜 계정이 이미 있는지 확인
