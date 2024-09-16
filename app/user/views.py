@@ -61,7 +61,7 @@ def kakao_callback(request):
         headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
-    uid = KakaoProvider.extract_uid(profile_json)
+    uid = profile_json["id"]
     kakao_account = profile_json.get("kakao_account")["profile"]
     nickname = kakao_account.get("nickname")
 
