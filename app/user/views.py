@@ -1,5 +1,6 @@
 import logging
 import os
+import secrets
 
 import requests
 from allauth.socialaccount.adapter import get_adapter
@@ -83,9 +84,7 @@ def kakao_callback(request):
             )
 
     except get_user_model().DoesNotExist:
-        user = get_user_model().objects.create_user(username=nickname)
-        user.set_password()
-        user.save()
+        user = get_user_model().objects.create_user(username=nickname, password=None)
         social_user = SocialAccount.objects.create(user=user, uid=uid, provider="kakao")
 
     # JWT 생성
