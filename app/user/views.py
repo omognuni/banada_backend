@@ -69,8 +69,8 @@ def kakao_callback(request):
     Signup or Signin Request
     """
     try:
-        user = get_user_model().objects.get(username=nickname)
-        social_user = SocialAccount.objects.get(user=user)
+        social_user = SocialAccount.objects.get(uid=uid, provider="kakao")
+        user = social_user.user
         if social_user is None:
             return JsonResponse(
                 {"err_msg": "email exists but not social user"},
