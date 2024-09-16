@@ -2,15 +2,19 @@ import logging
 import os
 
 import requests
+from allauth.socialaccount.adapter import get_adapter
 from allauth.socialaccount.models import SocialAccount
+from allauth.socialaccount.providers.kakao.provider import KakaoProvider
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
-from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 
 logger = logging.getLogger("django")
 
@@ -23,7 +27,7 @@ class KakaoLogin(SocialLoginView):
 
 BASE_URL = "https://banada.duckdns.org/"
 
-KAKAO_CALLBACK_URI = "https://banada.duckdns.org/api/v1/kakao/callback"
+KAKAO_CALLBACK_URI = "https://banada.duckdns.org/api/v1/kakao/callback/"
 
 
 @api_view(["GET"])
@@ -51,14 +55,11 @@ def kakao_callback(request):
     token_req_json = token_req.json()
     access_token = token_req_json.get("access_token")
 
-    # logger.info(f"{params}, access_token: {access_token}")
-
     profile_request = requests.get(
         "https://kapi.kakao.com/v2/user/me",
         headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
-    logger.info(profile_json)
     kakao_account = profile_json.get("kakao_account")["profile"]
     nickname = kakao_account.get("nickname")
 
@@ -67,66 +68,46 @@ def kakao_callback(request):
     """
     try:
         user = get_user_model().objects.get(username=nickname)
-        # 기존에 가입된 유저의 Provider가 kakao가 아니면 에러 발생, 맞으면 로그인
-        # 다른 SNS로 가입된 유저
-        social_user = SocialAccount.objects.get(user=user)
-        if social_user is None:
-            return JsonResponse(
-                {"err_msg": "email exists but not social user"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        if social_user.provider != "kakao":
-            return JsonResponse(
-                {"err_msg": "no matching social type"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        # 기존에 kakao로 가입된 유저
-        data = {"access": access_token, "code": code}
-        accept = requests.post(f"{BASE_URL}api/v1/kakao/login/finish/", data=data)
-        accept_status = accept.status_code
-        if accept_status != 200:
-            return JsonResponse({"err_msg": "failed to signin"}, status=accept_status)
-        accept_json = accept.json()
-        # refresh_token을 headers 문자열에서 추출함
-        refresh_token = accept.headers["Set-Cookie"]
-        refresh_token = refresh_token.replace("=", ";").replace(",", ";").split(";")
-        token_index = refresh_token.index(" refresh")
-        cookie_max_age = 3600 * 24 * 14  # 14 days
-        refresh_token = refresh_token[token_index + 1]
-        accept_json.pop("user", None)
-        response_cookie = JsonResponse(accept_json)
-        response_cookie.set_cookie(
-            "refresh",
-            refresh_token,
-            max_age=cookie_max_age,
-            httponly=True,
-            samesite="Lax",
-        )
-        return response_cookie
-
     except get_user_model().DoesNotExist:
-        # 기존에 가입된 유저가 없으면 새로 가입
-        data = {"access": access_token, "code": code}
-        accept = requests.post(f"{BASE_URL}api/v1/kakao/login/finish/", data=data)
-        accept_status = accept.status_code
-        if accept_status != 200:
-            return JsonResponse({"err_msg": "failed to signup"}, status=accept_status)
-        # user의 pk, email, first name, last name과 Access Token, Refresh token 가져옴
+        adapter = get_adapter(request)
+        user = adapter.new_user(request)
+        user.username = nickname
+        user.set_unusable_password()
+        adapter.save_user(request, user)
 
-        accept_json = accept.json()
-        # refresh_token을 headers 문자열에서 추출함
-        refresh_token = accept.headers["Set-Cookie"]
-        refresh_token = refresh_token.replace("=", ";").replace(",", ";").split(";")
-        token_index = refresh_token.index("refresh")
-        refresh_token = refresh_token[token_index + 1]
-
-        accept_json.pop("user", None)
-        response_cookie = JsonResponse(accept_json)
-        response_cookie.set_cookie(
-            "refresh",
-            refresh_token,
-            max_age=cookie_max_age,
-            httponly=True,
-            samesite="Lax",
+        # 소셜 계정 생성
+        social_account = SocialAccount(
+            user=user, provider=KakaoProvider.id, uid=profile_json.get("id")
         )
-        return response_cookie
+        social_account.save()
+
+    # JWT 생성
+    refresh = RefreshToken.for_user(user)
+    access_token = str(refresh.access_token)
+    refresh_token = str(refresh)
+
+    # 응답에 Set-Cookie 헤더 추가
+    response = JsonResponse(
+        {
+            "access": access_token,
+        }
+    )
+
+    # 설정된 JWT를 쿠키에 추가
+    cookie_max_age = 3600 * 24 * 14  # 14 days
+    response.set_cookie(
+        "refresh",
+        refresh_token,
+        max_age=cookie_max_age,
+        httponly=True,
+        samesite="Lax",
+    )
+    response.set_cookie(
+        "access",
+        access_token,
+        max_age=settings.SIMPLE_JWT.get("ACCESS_TOKEN_LIFETIME"),
+        httponly=True,
+        samesite="Lax",
+    )
+
+    return response
