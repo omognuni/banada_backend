@@ -54,6 +54,7 @@ def kakao_callback(request):
     """
     profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
+        params={"property_keys": ["properties.nickname"]},
         headers={
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
             "Authorization": f"Bearer {access_token}",
