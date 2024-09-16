@@ -5,7 +5,6 @@ import secrets
 import requests
 from allauth.socialaccount.adapter import get_adapter
 from allauth.socialaccount.models import SocialAccount
-from allauth.socialaccount.providers.kakao.provider import KakaoProvider
 from allauth.socialaccount.providers.kakao.views import KakaoOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
@@ -95,12 +94,16 @@ def kakao_callback(request):
     # 응답에 Set-Cookie 헤더 추가
     response = JsonResponse(
         {
+            "user_id": user.id,
             "access": access_token,
+            "refresh": refresh_token,
         }
     )
 
     # 설정된 JWT를 쿠키에 추가
     cookie_max_age = 3600 * 24 * 14  # 14 days
+
+    response.delete_cookie("sessionid")
     response.set_cookie(
         "refresh",
         refresh_token,
