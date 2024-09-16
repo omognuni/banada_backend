@@ -23,7 +23,7 @@ class KakaoLogin(SocialLoginView):
 
 BASE_URL = "https://banada.duckdns.org/"
 
-KAKAO_CALLBACK_URI = "https://banada.duckdns.org/auth/login"  # 프론트 로그인 URI 입력
+KAKAO_CALLBACK_URI = "https://banada.duckdns.org/api/v1/kakao/callback"
 
 
 @api_view(["GET"])

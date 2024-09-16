@@ -18,6 +18,7 @@ services:
     depends_on:
       - banada-db
     volumes:
+      - ./logs:app/logs
       - static-data:/app/static
       - media-data:/app/media
     env_file:
