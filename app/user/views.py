@@ -60,9 +60,8 @@ def kakao_callback(request):
         },
     )
     profile_json = profile_request.json()
-    kakao_account = profile_json.get("kakao_account")
-    kakao_profile = kakao_account.get("profile")
-    nickname = kakao_profile.get("nickname")
+    kakao_account = profile_json.get("properties")
+    nickname = kakao_account.get("nickname")
 
     """
     Signup or Signin Request
