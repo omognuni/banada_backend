@@ -1,5 +1,5 @@
+import logging
 import os
-from json.decoder import JSONDecodeError
 
 import requests
 from allauth.socialaccount.models import SocialAccount
@@ -11,6 +11,8 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+
+logger = logging.getLogger("django")
 
 
 class KakaoLogin(SocialLoginView):
@@ -55,12 +57,10 @@ def kakao_callback(request):
     profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
         params={"property_keys": ["properties.nickname"]},
-        headers={
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-            "Authorization": f"Bearer {access_token}",
-        },
+        headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
+    logger.info(profile_json)
     kakao_account = profile_json.get("properties")
     nickname = kakao_account.get("nickname")
 
