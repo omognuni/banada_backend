@@ -49,8 +49,9 @@ def kakao_callback(request):
         f"https://kauth.kakao.com/oauth/token", params=params, headers=headers
     )
     token_req_json = token_req.json()
-    logger.info(f"{params}, access_token: {access_token}")
     access_token = token_req_json.get("access_token")
+
+    # logger.info(f"{params}, access_token: {access_token}")
 
     profile_request = requests.get(
         "https://kapi.kakao.com/v2/user/me",
