@@ -56,12 +56,12 @@ def kakao_callback(request):
     """
     profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
-        params={"property_keys": ["properties.nickname"]},
+        # params={"property_keys": '["properties.nickname"]'},
         headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
     logger.info(profile_json)
-    kakao_account = profile_json.get("properties")
+    kakao_account = profile_json.get("kakao_account")["profile"]
     nickname = kakao_account.get("nickname")
 
     """
