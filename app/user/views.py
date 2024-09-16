@@ -52,7 +52,7 @@ def kakao_callback(request):
     logger.info(f"{params}, access_token: {access_token}")
     access_token = token_req_json.get("access_token")
 
-    profile_request = requests.post(
+    profile_request = requests.get(
         "https://kapi.kakao.com/v2/user/me",
         headers={"Authorization": f"Bearer {access_token}"},
     )
