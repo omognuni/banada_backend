@@ -49,14 +49,11 @@ def kakao_callback(request):
         f"https://kauth.kakao.com/oauth/token", params=params, headers=headers
     )
     token_req_json = token_req.json()
+    logger.info(f"{params}, access_token: {access_token}")
     access_token = token_req_json.get("access_token")
 
-    """
-    Email Request
-    """
     profile_request = requests.post(
         "https://kapi.kakao.com/v2/user/me",
-        # params={"property_keys": '["properties.nickname"]'},
         headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
