@@ -66,7 +66,7 @@ def kakao_callback(request):
         kakao_account = profile_json.get("kakao_account")
         profile = kakao_account.get("profile")
         nickname = profile.get("nickname")
-    except:
+    except KeyError:
         return JsonResponse(
             {"msg": "profile 접근 권한 동의가 필요합니다."},
             status=status.HTTP_400_BAD_REQUEST,
