@@ -61,11 +61,12 @@ def kakao_callback(request):
         headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
-    uid = profile_json.get("id")
-    kakao_account = profile_json.get("kakao_account")
-    profile = kakao_account.get("profile")
-    nickname = profile.get("nickname")
-    if not profile:
+    try:
+        uid = profile_json.get("id")
+        kakao_account = profile_json.get("kakao_account")
+        profile = kakao_account.get("profile")
+        nickname = profile.get("nickname")
+    except:
         return JsonResponse(
             {"msg": "profile 접근 권한 동의가 필요합니다."},
             status=status.HTTP_400_BAD_REQUEST,
