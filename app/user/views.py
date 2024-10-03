@@ -1,6 +1,6 @@
 import logging
 import os
-import secrets
+from profile.models import Profile
 
 import requests
 from allauth.socialaccount.adapter import get_adapter
@@ -66,7 +66,7 @@ def kakao_callback(request):
         kakao_account = profile_json.get("kakao_account")
         profile = kakao_account.get("profile")
         nickname = profile.get("nickname")
-    except KeyError:
+    except (TypeError, AttributeError, KeyError):
         return JsonResponse(
             {"msg": "profile 접근 권한 동의가 필요합니다."},
             status=status.HTTP_400_BAD_REQUEST,
@@ -96,6 +96,11 @@ def kakao_callback(request):
     except Exception as e:
         return JsonResponse({"msg": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
+    if not user.profiles.exists():
+        profile = Profile.objects.create(user=user)
+    else:
+        profile = Profile.objects.get(user=user)
+
     # JWT 생성
     refresh = RefreshToken.for_user(user)
     access_token = str(refresh.access_token)
@@ -105,6 +110,7 @@ def kakao_callback(request):
     response = JsonResponse(
         {
             "user_id": user.id,
+            "profile_id": profile.id,
             "access": access_token,
             "refresh": refresh_token,
         }
