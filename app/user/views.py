@@ -90,7 +90,8 @@ def kakao_callback(request):
             )
 
     except get_user_model().DoesNotExist:
-        user = get_user_model().objects.create_user(username=nickname, password=None)
+        user = get_user_model().objects.create(username=nickname)
+        user.set_unusable_password()
         social_user = SocialAccount.objects.create(user=user, uid=uid, provider="kakao")
 
     # JWT 생성
