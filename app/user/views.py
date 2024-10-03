@@ -85,14 +85,16 @@ def kakao_callback(request):
             )
         if social_user.provider != "kakao":
             return JsonResponse(
-                {"err_msg": "no matching social type"},
+                {"msg": "no matching social type"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    except get_user_model().DoesNotExist:
+    except SocialAccount.DoesNotExist:
         user = get_user_model().objects.create(username=nickname)
         user.set_unusable_password()
         social_user = SocialAccount.objects.create(user=user, uid=uid, provider="kakao")
+    except Exception as e:
+        return JsonResponse({"msg": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
     # JWT 생성
     refresh = RefreshToken.for_user(user)
