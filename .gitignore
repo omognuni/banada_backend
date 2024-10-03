@@ -7,6 +7,10 @@ __pycache__/
 media/
 static/
 
+#logs
+*.log.*
+
+
 # C extensions
 *.so
 

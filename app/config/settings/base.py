@@ -96,9 +96,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko-kr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
+
+USE_L10N = True
 
 USE_I18N = True
 
@@ -147,9 +149,6 @@ REST_AUTH = {
     "JWT_AUTH_COOKIE_USE_CSRF": True,
     "SESSION_LOGIN": False,
 }
-# ACCOUNT_EMAIL_REQUIRED = True  # email 필드 사용 o
-# ACCOUNT_AUTHENTICATION_METHOD = "email"
-# ACCOUNT_EMAIL_VERIFICATION = "none"
 
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
@@ -241,10 +240,11 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": os.path.join(LOG_DIR, "django.log"),
+            "filename": os.path.join(LOG_DIR, "app.log"),
             "when": "midnight",
-            "backupCount": 7,  # 백업 파일의 개수 (7일간의 로그 유지)
+            "backupCount": 30,
             "formatter": "verbose",
+            "encoding": "utf-8",
         },
     },
     "loggers": {
