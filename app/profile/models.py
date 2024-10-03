@@ -1,6 +1,6 @@
 import os
 import uuid
-from profile.enums import CategoryChoices, GenderChoices
+from profile.enums import CategoryChoices, GenderChoices, ProfileStatus
 
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
@@ -20,17 +20,39 @@ class Profile(SoftDeletedModel, TimeStampModel):
     user = models.ForeignKey(
         get_user_model(), related_name="profiles", on_delete=models.CASCADE
     )
-    nickname = models.CharField(max_length=200, null=True, unique=True)
-    gender = models.CharField(
-        max_length=200, choices=GenderChoices.choices(), blank=True
+    email = models.EmailField(max_length=255, unique=True, null=True)
+    nickname = models.CharField(
+        max_length=200, null=True, unique=True, verbose_name="닉네임"
     )
-    age = models.IntegerField(blank=True, null=True)
-    height = models.IntegerField(blank=True, null=True)
-    job = models.CharField(max_length=200, blank=True)
-    residence = models.CharField(max_length=200, blank=True)
-    religion = models.CharField(max_length=200, blank=True)
-    is_smoke = models.BooleanField(blank=True, default=False)
-    drinking_frequency = models.CharField(max_length=200, blank=True)
+    gender = models.CharField(
+        max_length=200, choices=GenderChoices.choices(), blank=True, verbose_name="성별"
+    )
+    age = models.IntegerField(blank=True, null=True, verbose_name="나이(만)")
+    height = models.IntegerField(blank=True, null=True, verbose_name="키")
+    job = models.CharField(max_length=200, blank=True, verbose_name="직업")
+    residence = models.CharField(max_length=200, blank=True, verbose_name="주소")
+    religion = models.CharField(max_length=200, blank=True, verbose_name="종교")
+    is_smoke = models.BooleanField(blank=True, default=False, verbose_name="흡연 여부")
+    drinking_frequency = models.CharField(
+        max_length=200, blank=True, verbose_name="음주 빈도"
+    )
+
+    status = models.CharField(
+        max_length=100,
+        choices=ProfileStatus.choices(),
+        default=ProfileStatus.ACTIVE,
+        verbose_name="계정 상태",
+    )
+    recommdender = models.ForeignKey(
+        "Profile", on_delete=models.SET_NULL, null=True, verbose_name="추천인"
+    )
+
+    class Meta:
+        verbose_name = "회원"
+        verbose_name_plural = "회원 목록"
+
+    def __str__(self):
+        return self.nickname
 
     @property
     def main_image(self):

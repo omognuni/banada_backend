@@ -1,6 +1,10 @@
 from profile.models import Profile
 
+from django import forms
 from django.contrib import admin
+from django.db import models
 
-# Register your models here.
-admin.register(Profile)
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("nickname", "gender", "age", "created_time", "email")
