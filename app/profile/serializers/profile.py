@@ -104,5 +104,4 @@ class ProfileAnswerValueSerializer(serializers.Serializer):
 
 
 class ProfileValidationSerializer(serializers.Serializer):
-    profile_id = serializers.IntegerField(required=False)
     nickname = serializers.CharField(required=False)
