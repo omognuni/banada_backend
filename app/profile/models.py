@@ -64,7 +64,7 @@ class Profile(SoftDeletedModel, TimeStampModel):
         verbose_name_plural = "회원 목록"
 
     def __str__(self):
-        return self.nickname
+        return "" if self.nickname is None else self.nickname
 
     @property
     def main_image(self):
