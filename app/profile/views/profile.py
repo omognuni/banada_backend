@@ -194,7 +194,7 @@ class ProfileViewSet(viewsets.GenericViewSet):
 
         service = ProfileService(user=request.user)
         msg = service.validate(filter_serializer.validated_data)
-        return Response(data={"message": msg}, status=status.HTTP_200_Ok)
+        return Response(data={"message": msg}, status=status.HTTP_200_OK)
 
     @action(methods=["GET"], detail=True, url_path="phone-validation")
     def phone_validation(self, request, pk):
@@ -203,4 +203,4 @@ class ProfileViewSet(viewsets.GenericViewSet):
         """
         service = ProfileService(user=request.user)
         msg = service.validate({"profile_id": pk})
-        return Response(data={"message": msg}, status=status.HTTP_200_Ok)
+        return Response(data={"message": msg}, status=status.HTTP_200_OK)
