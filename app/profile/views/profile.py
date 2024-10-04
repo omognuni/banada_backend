@@ -39,7 +39,7 @@ from rest_framework.response import Response
     nickname_validation=extend_schema(
         tags=["Profile"], parameters=[ProfileValidationSerializer]
     ),
-    phone_validation=extend_schema(tagse=["Profile"]),
+    phone_validation=extend_schema(tags=["Profile"]),
 )
 class ProfileViewSet(viewsets.GenericViewSet):
     serializer_class = ProfileDetailSerializer
