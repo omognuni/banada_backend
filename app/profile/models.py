@@ -101,10 +101,6 @@ class ProfileImage(SoftDeletedModel, TimeStampModel):
 
     @property
     def image_url(self):
-        # Get current site domain if available
-        current_site = Site.objects.get_current()
-        domain = current_site.domain
-
         if self.image:
             return f"{settings.DNS}{self.image.url}"
         return ""
