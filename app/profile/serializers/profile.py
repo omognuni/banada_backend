@@ -17,7 +17,7 @@ class ProfileImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileImage
-        fields = ("id", "image", "is_main")
+        fields = ("id", "image", "is_main", "image_url")
         read_only_fields = ("id",)
 
     def create(self, validated_data):

@@ -5,6 +5,7 @@ from profile.enums import CategoryChoices, GenderChoices, ProfileStatus
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -96,6 +97,16 @@ class ProfileImage(SoftDeletedModel, TimeStampModel):
     )
     image = models.ImageField(blank=True, null=True, upload_to=profile_image_file_path)
     is_main = models.BooleanField(default=False)
+
+    @property
+    def image_url(self):
+        # Get current site domain if available
+        current_site = Site.objects.get_current()
+        domain = current_site.domain
+
+        if self.image:
+            return f"{domain}/{self.image.url}"
+        return ""
 
 
 class Simulation(SoftDeletedModel, TimeStampModel):
