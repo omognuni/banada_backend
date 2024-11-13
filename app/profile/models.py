@@ -4,6 +4,7 @@ from profile.enums import CategoryChoices, GenderChoices, ProfileStatus
 
 from contact.enums import MessageStatus
 from core.models import SoftDeletedModel, TimeStampModel
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.core.validators import RegexValidator
@@ -105,7 +106,7 @@ class ProfileImage(SoftDeletedModel, TimeStampModel):
         domain = current_site.domain
 
         if self.image:
-            return f"{domain}/{self.image.url}"
+            return f"{settings.DNS}{self.image.url}"
         return ""
 
 
