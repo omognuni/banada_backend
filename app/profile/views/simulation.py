@@ -1,7 +1,7 @@
 from profile.models import Simulation
 from profile.serializers.simulation import SimulationSerializer
 
-from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 
 
