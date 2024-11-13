@@ -4,9 +4,11 @@ from rest_framework import serializers
 
 
 class AnswerChoiceSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = AnswerChoice
-        fields = ["id", "simulation", "index", "content"]
+        fields = ["id", "index", "content"]
 
 
 class SimulationSerializer(serializers.ModelSerializer):
