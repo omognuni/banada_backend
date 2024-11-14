@@ -1,4 +1,4 @@
-from profile.models import Profile
+from profile.models import AnswerChoice, Profile, ProfileImage, Simulation
 
 from django.contrib import admin
 
@@ -8,3 +8,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(ProfileImage)
+admin.site.register(Simulation)
+admin.site.register(AnswerChoice)
