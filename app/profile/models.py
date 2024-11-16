@@ -107,9 +107,7 @@ class ProfileImage(SoftDeletedModel, TimeStampModel):
 
 
 class Simulation(SoftDeletedModel, TimeStampModel):
-    category = models.CharField(
-        max_length=20, choices=CategoryChoices.choices(), blank=True
-    )
+    category = models.CharField(max_length=20, blank=True)
     question = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
