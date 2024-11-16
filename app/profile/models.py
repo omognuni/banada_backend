@@ -112,6 +112,9 @@ class Simulation(SoftDeletedModel, TimeStampModel):
     )
     question = models.CharField(max_length=200, blank=True)
 
+    def __str__(self):
+        return "" if self.question is None else self.question
+
 
 class AnswerChoice(models.Model):
     simulation = models.ForeignKey(
