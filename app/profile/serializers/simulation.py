@@ -4,6 +4,14 @@ from rest_framework import serializers
 
 
 class AnswerChoiceSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False, read_only=True)
+
+    class Meta:
+        model = AnswerChoice
+        fields = ["id", "index", "content"]
+
+
+class AnswerChoicePatchSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
 
     class Meta:
@@ -24,6 +32,14 @@ class SimulationSerializer(serializers.ModelSerializer):
         for answer_choice_data in answer_choices_data:
             AnswerChoice.objects.create(simulation=simulation, **answer_choice_data)
         return simulation
+
+
+class SimulationPatchSerializer(serializers.ModelSerializer):
+    answer_choices = AnswerChoicePatchSerializer(many=True, required=False)
+
+    class Meta:
+        model = Simulation
+        fields = ("id", "category", "question", "answer_choices")
 
     def update(self, instance, validated_data):
         answer_choices_data = validated_data.pop("answer_choices", [])
