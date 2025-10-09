@@ -3,6 +3,9 @@ version: "3.9"
 services:
   app:
     image: melbong/banada_be
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -14,3 +17,5 @@ services:
             "
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.local
+    env_file:
+      - .env

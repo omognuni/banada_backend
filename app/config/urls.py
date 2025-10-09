@@ -34,7 +34,6 @@ urlpatterns = [
             [
                 path("", include("profile.urls")),
                 path("", include("contact.urls")),
-                path("", include("user.urls")),
             ]
         ),
     ),

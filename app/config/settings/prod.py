@@ -22,7 +22,8 @@ DNS = os.environ.get("DNS")
 
 CSRF_TRUSTED_ORIGINS = [
     f"http://{SERVER_HOST}:{LISTEN_PORT}",
-    "http://ec2-3-25-64-39.ap-southeast-2.compute.amazonaws.com:8000",
-    "http://ec2-3-25-64-39.ap-southeast-2.compute.amazonaws.com",
     DNS,
 ]
+
+# all auth
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"

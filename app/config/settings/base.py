@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     # APP
     "core",
     "profile",
-    "user",
     "contact",
 ]
 
@@ -149,14 +148,15 @@ REST_AUTH = {
     "JWT_AUTH_COOKIE": "access",
     "JWT_AUTH_HTTPONLY": True,
     "JWT_AUTH_REFRESH_COOKIE": "refresh",
-    "JWT_AUTH_COOKIE_USE_CSRF": True,
+    "JWT_AUTH_COOKIE_USE_CSRF": False,
+    "JWT_AUTH_SAMESITE": "Lax",
     "SESSION_LOGIN": False,
+    "REGISTER_SERIALIZER": "dj_rest_auth.registration.serializers.RegisterSerializer",
 }
 
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 SOCIALACCOUNT_LOGIN_ON_GET = True
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 SOCIALACCOUNT_PROVIDERS = {
     "kakao": {
@@ -216,10 +216,6 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "DISABLE_ERRORS_AND_WARNINGS": True,
 }
-
-
-import os
-from datetime import datetime
 
 LOG_DIR = os.path.join(BASE_DIR, "logs")
 
